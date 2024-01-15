@@ -12,6 +12,7 @@ import { ProductDetails } from "./views/ProductDetails/ProductDetails";
 import { mainPageLoader } from "./api/mainPageLoader";
 import { productListLoader } from "./api/productListLoader";
 import { productLoader } from "./api/productLoader";
+import { favouritesLoader } from "./api/favouritesLoader";
 import { addProductToFavourites } from "./api/addProductToFavouritesAction";
 import { deleteFavouriteAction } from "./api/deleteFavouritesAction";
 import { NotFound } from "./components/NotFound/NotFound";
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       {
         path: "/ulubione",
         element: <Favourites />,
+        loader: favouritesLoader,
       },
       {
         path: "/:gender?",

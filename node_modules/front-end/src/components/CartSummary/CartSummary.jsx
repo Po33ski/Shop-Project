@@ -26,7 +26,7 @@ export function CartSummary({ products }) {
 
   let sum = 0;
   products.forEach((product) => {
-    sum += currency === CURRENCIES.PLN ? product.pricePLN : product.priceUSD;
+    sum += currency === CURRENCIES.PLN ? product?.pricePLN : product?.priceUSD;
   });
 
   const totalCost = sum > minSumForFreeDelivery ? sum : sum + deliveryCost;

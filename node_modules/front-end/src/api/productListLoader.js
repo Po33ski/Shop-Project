@@ -40,6 +40,6 @@ export function productListLoader({
       });
     });
   } else {
-    redirect("/kobieta");
+    return redirect("/kobieta");
   }
 }

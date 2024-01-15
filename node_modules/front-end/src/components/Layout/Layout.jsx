@@ -23,11 +23,23 @@ export function Layout() {
   function addProductToCart(product) {
     const newState = [...cartItems, product];
     setCartItems(newState);
+    //console.log(newState);
+  }
+
+  function deleteProductFromCart(product) {
+    const index = cartItems.indexOf(product);
+    //console.log(cartItems[index]);
+    const newState = [...cartItems];
+    newState.splice(index, 1);
+    setCartItems(newState);
+    //console.log(newState);
   }
 
   return (
     <>
-      <CartContext.Provider value={[cartItems, addProductToCart]}>
+      <CartContext.Provider
+        value={[cartItems, addProductToCart, deleteProductFromCart]}
+      >
         <CurrencyContext.Provider value={[currency, setCurrency]}>
           <MainContent>
             <TopBar>

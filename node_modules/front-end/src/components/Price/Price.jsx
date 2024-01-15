@@ -6,7 +6,7 @@ export function Price({ product }) {
   const [currency] = useContext(CurrencyContext);
   return (
     <>
-      {currency === CURRENCIES.PLN ? product.pricePLN : product.priceUSD}
+      {currency === CURRENCIES.PLN ? product?.pricePLN : product?.priceUSD}
       {CURRENCY_SIGN[currency]}
     </>
   );
