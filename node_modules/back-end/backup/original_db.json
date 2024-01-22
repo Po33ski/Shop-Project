@@ -694,8 +694,8 @@
       "priceUSD": 59,
       "photos": [
         "http://localhost:3000/product-photos/women-sweater-1.jpg",
-        "http://localhost:3000/product-photos/women-shoes-2.jpg",
-        "http://localhost:3000/product-photos/women-trousers-1.jpg"
+        "http://localhost:3000/product-photos/women-sweater-1.jpg",
+        "http://localhost:3000/product-photos/women-sweater-1.jpg"
       ],
       "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
       "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"
@@ -1427,6 +1427,91 @@
         "http://localhost:3000/product-photos/children-trousers-2.jpg",
         "http://localhost:3000/product-photos/children-trousers-3.jpg",
         "http://localhost:3000/product-photos/children-trousers-1.jpg"
+      ],
+      "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
+      "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"
+    },
+    {
+      "id": 75,
+      "gender": "men",
+      "category": "obuwie",
+      "subcategory": "eleganckie",
+      "productName": "Biurowe",
+      "brand": "Top Brand",
+      "pricePLN": 449,
+      "priceUSD": 105,
+      "photos": [
+        "http://localhost:3000/product-photos/man-shoes-1.jpg",
+        "http://localhost:3000/product-photos/man-shoes-2.jpg",
+        "http://localhost:3000/product-photos/man-shoes-3.jpg"
+      ],
+      "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
+      "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"
+    },
+    {
+      "id": 76,
+      "gender": "men",
+      "category": "obuwie",
+      "subcategory": "eleganckie",
+      "productName": "Eleganckie",
+      "brand": "Top Brand",
+      "pricePLN": 400,
+      "priceUSD": 90,
+      "photos": [
+        "http://localhost:3000/product-photos/man-shoes-1.jpg",
+        "http://localhost:3000/product-photos/man-shoes-2.jpg",
+        "http://localhost:3000/product-photos/man-shoes-3.jpg"
+      ],
+      "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
+      "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"
+    },
+    {
+      "id": 77,
+      "gender": "men",
+      "category": "obuwie",
+      "subcategory": "eleganckie",
+      "productName": "Biurowe",
+      "brand": "Top Brand",
+      "pricePLN": 449,
+      "priceUSD": 105,
+      "photos": [
+        "http://localhost:3000/product-photos/man-shoes-1.jpg",
+        "http://localhost:3000/product-photos/man-shoes-2.jpg",
+        "http://localhost:3000/product-photos/man-shoes-3.jpg"
+      ],
+      "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
+      "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"
+    },
+    {
+      "id": 78,
+      "gender": "men",
+      "category": "akcesoria",
+      "subcategory": "torby",
+      "productName": "bag",
+      "brand": "Special Brand",
+      "pricePLN": 49,
+      "priceUSD": 10,
+      "photos": [
+        "http://localhost:3000/product-photos/man-bag-1.jpg",
+        "http://localhost:3000/product-photos/man-bag-2.jpg",
+        "http://localhost:3000/product-photos/man-bag-1.jpg"
+      ],
+      "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
+      "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"
+    },
+    {
+      "id": 79,
+      "gender": "men",
+      "category": "akcesoria",
+      "subcategory": "zegarki",
+      "productName": "Czarny Zegarek",
+      "brand": "Top Brand",
+      "pricePLN": 549,
+      "priceUSD": 130,
+      "photos": [
+        "http://localhost:3000/product-photos/man-watch-1.jpg",
+        "http://localhost:3000/product-photos/man-watch-1.jpg",
+        "http://localhost:3000/product-photos/man-watch-1.jpg"
       ],
       "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla facilis aperiam, magnam dolorum sit expedita nihil nostrum, voluptates temporibus voluptatum atque ullam molestiae provident dolore eligendi? Esse amet dolore illum.",
       "maintenanceInfo": "Nemo et nam quasi in suscipit earum odit laborum repellat quo dolore rem, sequi eaque sapiente quibu"

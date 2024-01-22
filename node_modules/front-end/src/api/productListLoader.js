@@ -25,11 +25,11 @@ export function productListLoader({
       }
     }
 
-    url = `${url}&_limit=8&_page=${page}`;
+    url = `${url}&_limit=10&_page=${page}`;
 
     return fetch(url).then((response) => {
       const numberOfPages = Math.ceil(
-        Number(response.headers.get("X-Total-Count")) / 8
+        Number(response.headers.get("X-Total-Count")) / 10
       );
 
       return response.json().then((products) => {
