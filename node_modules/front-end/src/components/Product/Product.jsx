@@ -10,9 +10,9 @@ const ENDPOINT_TO_PATH_MAPPING = {
 
 export function Product({ product }) {
   const { Form } = useFetcher();
-  // dzieki useFetcher react router nie wykona przekierowanie (na adres z action) ktore zostaloby wykonane pozasabmitowaniu formularza
+
   return (
-    <Link // zostaje wywolane po kliknieciu w produkt
+    <Link
       to={`/${ENDPOINT_TO_PATH_MAPPING[product.gender]}/${product.category}/${
         product.subcategory
       }/${product.id}`}
@@ -26,7 +26,7 @@ export function Product({ product }) {
       <Form
         onClick={(e) => {
           e.stopPropagation();
-        }} // bez onClick nacisniecie w formularz zaciala jak nacisniecie w Link i nas przekieruje / stopPropagation
+        }}
         method="POST"
         action={`/add-to-favourites/${product.id}`}
       >

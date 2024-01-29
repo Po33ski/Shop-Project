@@ -23,16 +23,13 @@ export function Layout() {
   function addProductToCart(product) {
     const newState = [...cartItems, product];
     setCartItems(newState);
-    //console.log(newState);
   }
 
   function deleteProductFromCart(product) {
     const index = cartItems.indexOf(product);
-    //console.log(cartItems[index]);
     const newState = [...cartItems];
     newState.splice(index, 1);
     setCartItems(newState);
-    //console.log(newState);
   }
 
   return (
