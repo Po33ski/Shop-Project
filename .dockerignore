@@ -1,0 +1,53 @@
+# Node modules
+node_modules
+**/node_modules
+npm-debug.log
+yarn-error.log
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Development files
+front-end/node_modules
+back-end/node_modules
+front-end/.env.local
+front-end/.env.development
+back-end/.env.local
+back-end/.env.development
+
+# Build artifacts
+front-end/dist
+front-end/build
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+*.md
+!README.md
+
+# Tests
+**/*.test.js
+**/*.spec.js
+**/tests
+**/test
+
+# CI/CD
+.github
+
+# Logs
+logs
+*.log
+
+# Misc
+.env.local
+.env.development
+.env.test
+

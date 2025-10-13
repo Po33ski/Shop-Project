@@ -12,6 +12,9 @@
         "reset": "cp \"./back-end/backup/original_db.json\" ./back-end/db.json",
         "front-end": "npm run dev --workspace=front-end",
         "back-end": "npm run dev --workspace=back-end",
-        "dev": "npm-run-all --parallel front-end back-end"
+        "dev": "npm-run-all --parallel front-end back-end",
+        "docker:build": "docker build -t shop-ecommerce .",
+        "docker:run": "docker run -p 10000:10000 shop-ecommerce",
+        "docker:dev": "npm run docker:build && npm run docker:run"
     }
 }
