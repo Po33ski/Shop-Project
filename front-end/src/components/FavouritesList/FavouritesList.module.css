@@ -3,3 +3,16 @@
   background-color: var(--color-grey);
   margin-top: 1rem;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .favouritesList {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .favouritesList h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+}

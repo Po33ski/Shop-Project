@@ -12,3 +12,18 @@
 .black {
   background-color: var(--color-text-default);
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .button {
+    padding: 0.8rem 0;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .button {
+    padding: 0.7rem 0;
+    font-size: 0.9rem;
+  }
+}

@@ -6,8 +6,6 @@
 .productsWrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: flex-start;
 }
 
 /* Mobile responsive */

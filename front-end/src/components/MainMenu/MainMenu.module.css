@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .mainMenu li a {
@@ -12,7 +12,6 @@
   padding: 1rem 0;
   display: block;
   font-weight: 700;
-  white-space: nowrap;
 }
 
 .mainMenu a:global(.active) {

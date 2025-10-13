@@ -1,24 +1,20 @@
 .product {
   position: relative;
   margin-left: 2rem;
-  margin-bottom: 1.5rem;
 }
 
 .product button {
   border: none;
-  cursor: pointer;
 }
 
 .product img {
   width: 250px;
   height: 400px;
-  object-fit: cover;
 }
 
 .product h3 {
   font-weight: 700;
   margin: 0.5rem 0;
-  font-size: 1rem;
 }
 
 .product p {
@@ -30,11 +26,12 @@
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
+
   width: 1.5rem;
   height: 1.5rem;
+
   background-image: url("../../assets/heart.svg");
   background-repeat: none;
-  transition: background-image 0.2s;
 }
 
 .heart:hover {

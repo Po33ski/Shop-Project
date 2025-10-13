@@ -28,3 +28,56 @@
   font-weight: 700;
   background-color: var(--color-grey);
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .cartSummary {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    gap: 0.8rem;
+  }
+  
+  .cartSummary h2 {
+    font-size: 1.3rem;
+    padding-bottom: 0.8rem;
+  }
+  
+  .cartRow {
+    font-size: 0.95rem;
+  }
+  
+  .deliveryInfo {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+  
+  .deliveryInfo img {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cartSummary {
+    padding: 0.8rem;
+    gap: 0.6rem;
+  }
+  
+  .cartSummary h2 {
+    font-size: 1.2rem;
+  }
+  
+  .cartRow {
+    font-size: 0.9rem;
+  }
+  
+  .deliveryInfo {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
