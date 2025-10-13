@@ -6,6 +6,7 @@ import { IconMenu } from "../IconMenu/IconMenu";
 import { Logo } from "../Logo/Logo";
 import { MainContent } from "../MainContent/MainContent";
 import { MainMenu } from "../MainMenu/MainMenu";
+import { HamburgerMenu } from "../HamburgerMenu/HamburgerMenu";
 import { TopBar } from "../TopBar/TopBar";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { CURRENCIES } from "../../constants/currencies";
@@ -40,7 +41,10 @@ export function Layout() {
         <CurrencyContext.Provider value={[currency, setCurrency]}>
           <MainContent>
             <TopBar>
-              <MainMenu />
+              <div>
+                <HamburgerMenu />
+                <MainMenu />
+              </div>
               <Logo />
               <div>
                 <CurrencySelector />

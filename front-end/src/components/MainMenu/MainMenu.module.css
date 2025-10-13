@@ -12,9 +12,17 @@
   padding: 1rem 0;
   display: block;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .mainMenu a:global(.active) {
   color: var(--color-text-default);
   border-bottom: 3px solid var(--color-text-default);
+}
+
+/* Mobile responsive - hide desktop menu */
+@media (max-width: 768px) {
+  .mainMenu {
+    display: none;
+  }
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "./ExpandableMenu.module.css";
 import { CATEGORIES } from "../../constants/categories";
 import { NavLink, useParams } from "react-router-dom";
@@ -11,31 +12,53 @@ const PATH_TO_GENDER_NAME = {
 
 export function ExpandableMenu() {
   const params = useParams();
+  const [expandedCategory, setExpandedCategory] = useState(params.category || null);
 
-  const activePath = params.category;
+  const toggleCategory = (categoryPath) => {
+    // On mobile, toggle - on desktop, just navigate
+    if (window.innerWidth <= 768) {
+      setExpandedCategory(expandedCategory === categoryPath ? null : categoryPath);
+    }
+  };
+
   return (
     <div className={styles.expandableMenu}>
       <p>{PATH_TO_GENDER_NAME[params.gender]}</p>
       <ul>
         {CATEGORIES.map((category) => {
+          const isExpanded = expandedCategory === category.path;
+          
           return (
             <li key={category.path}>
-              <NavLink to={`/${params.gender}/${category.path}`}>
+              <NavLink 
+                to={`/${params.gender}/${category.path}`}
+                onClick={(e) => {
+                  // On mobile, prevent navigation if clicking to toggle
+                  if (window.innerWidth <= 768 && params.category === category.path) {
+                    e.preventDefault();
+                    toggleCategory(category.path);
+                  }
+                }}
+              >
                 {category.categoryName}{" "}
                 <img
                   src={ARROW_ICON}
-                  className={
-                    activePath === category.path ? styles.expanded : ""
-                  }
+                  className={isExpanded ? styles.expanded : ""}
                 />
               </NavLink>
-              {activePath === category.path && (
+              {isExpanded && (
                 <ul>
                   {category.subcategories.map((subcategory) => {
                     return (
                       <li key={subcategory.path}>
                         <NavLink
                           to={`/${params.gender}/${params.category}/${subcategory.path}`}
+                          onClick={() => {
+                            // Close menu after selecting subcategory on mobile
+                            if (window.innerWidth <= 768) {
+                              setExpandedCategory(null);
+                            }
+                          }}
                         >
                           {subcategory.categoryName}
                         </NavLink>

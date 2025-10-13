@@ -5,10 +5,24 @@
   max-width: 100rem;
   margin: 0 auto;
   align-items: center;
+  padding: 0 1rem;
 }
 
 .topBar > div {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .topBar {
+    grid-template-columns: auto 1fr auto;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+  
+  .topBar > div {
+    gap: 0.5rem;
+  }
 }
