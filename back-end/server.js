@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/products', require('./routes/products'));
 app.use('/categories', require('./routes/categories'));
 app.use('/favourites', require('./routes/favourites'));
+app.use('/upload', require('./routes/upload'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

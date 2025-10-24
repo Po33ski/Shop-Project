@@ -29,6 +29,8 @@ Edit `.env`:
 ```
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/shop-db
 PORT=3000
+AZURE_STORAGE_CONNECTION_STRING=your_azure_connection_string
+AZURE_STORAGE_CONTAINER_NAME=product-images
 ```
 
 ### 4. Add sample data
@@ -59,6 +61,13 @@ npm start
 - `GET /favourites` - Favourites
 - `POST /favourites` - Add to favourites
 - `DELETE /favourites/:id` - Remove from favourites
+
+### Image Upload Endpoints
+
+- `POST /upload/single` - Upload single image
+- `POST /upload/multiple` - Upload multiple images
+- `DELETE /upload/:fileName` - Delete image
+- `GET /upload/list` - List all images
 
 ## Frontend compatibility
 
