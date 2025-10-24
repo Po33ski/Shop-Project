@@ -35,9 +35,12 @@ WORKDIR /app/back-end
 COPY back-end/package.json back-end/package-lock.json* ./
 RUN npm ci --production
 
-COPY back-end/db.json ./
-COPY back-end/backup ./backup
-COPY back-end/public ./public
+# Copy backend source code
+COPY back-end/models ./models
+COPY back-end/routes ./routes
+COPY back-end/scripts ./scripts
+COPY back-end/server.js ./
+COPY back-end/env.example ./env.example
 
 # Copy built frontend to nginx directory
 COPY --from=frontend-builder /app/front-end/dist /var/www/html

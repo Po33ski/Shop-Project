@@ -22,13 +22,13 @@ fi
 
 echo "Nginx configuration OK"
 
-# Check if database exists
-if [ ! -f /app/back-end/db.json ]; then
-    echo "ERROR: Database file not found!"
+# Check if backend exists
+if [ ! -f /app/back-end/server.js ]; then
+    echo "ERROR: Backend server not found!"
     exit 1
 fi
 
-echo "Database file OK"
+echo "Backend server OK"
 
 # Start supervisor to manage both processes
 echo "Starting services with supervisor..."
