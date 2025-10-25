@@ -11,9 +11,8 @@ router.get('/women', async (req, res) => {
       isBestseller: true 
     }).limit(6);
 
-    // Get a random product image for hero
-    const heroProduct = await Product.findOne({ gender: 'women' });
-    const heroImageUrl = heroProduct ? heroProduct.photos[0] : null;
+    // Get dedicated hero image
+    const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/women.jpg';
 
     res.json({
       bestsellers,
@@ -34,9 +33,8 @@ router.get('/men', async (req, res) => {
       isBestseller: true 
     }).limit(6);
 
-    // Get a random product image for hero
-    const heroProduct = await Product.findOne({ gender: 'men' });
-    const heroImageUrl = heroProduct ? heroProduct.photos[0] : null;
+    // Get dedicated hero image
+    const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/men.jpg';
 
     res.json({
       bestsellers,
@@ -57,9 +55,8 @@ router.get('/children', async (req, res) => {
       isBestseller: true 
     }).limit(6);
 
-    // Get a random product image for hero
-    const heroProduct = await Product.findOne({ gender: 'children' });
-    const heroImageUrl = heroProduct ? heroProduct.photos[0] : null;
+    // Get dedicated hero image
+    const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/children.jpg';
 
     res.json({
       bestsellers,

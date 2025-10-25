@@ -37,7 +37,7 @@ const updateProductUrls = async () => {
         
         // Only update if there are changes
         if (JSON.stringify(updatedPhotos) !== JSON.stringify(product.photos)) {
-          product.photos = updatedPhotos;
+          product.photos = updatedPhotos; 
           await product.save();
           updatedCount++;
           console.log(`✅ Updated product: ${product.productName}`);

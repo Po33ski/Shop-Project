@@ -55,6 +55,7 @@ const findMatchingImages = (product) => {
     if (product.subcategory === 'koszulki' || product.productName.toLowerCase().includes('t-shirt')) {
       matches.push('man-t-shirt-1.jpg', 'man-t-shirt-2.jpg', 'man-t-shirt-3.jpg', 'man-t-shirt-4.jpg');
     } else if (product.subcategory === 'spodnie' || product.productName.toLowerCase().includes('jeans')) {
+      // We don't have men's trousers images, so use shorts as closest match
       matches.push('man-shorts-1.JPG', 'man-shorts-2.jpg');
     } else if (product.subcategory === 'obuwie' || product.productName.toLowerCase().includes('sneakers')) {
       matches.push('man-shoes-1.jpg', 'man-shoes-2.jpg', 'man-shoes-3.jpg');
@@ -63,11 +64,15 @@ const findMatchingImages = (product) => {
     }
   } else if (product.gender === 'women') {
     if (product.subcategory === 'sukienki' || product.productName.toLowerCase().includes('sukienka')) {
-      matches.push('women.jpg');
+      // Use appropriate dress images - we don't have specific dress images, so use general women's clothing
+      matches.push('women-sweater-1.jpg', 'women-shorts-1.jpg');
     } else if (product.subcategory === 'obuwie' || product.productName.toLowerCase().includes('szpilki')) {
       matches.push('women-shoes-1.jpg', 'women-shoes-2.jpg', 'womens-shoes-3.jpg');
     } else if (product.subcategory === 'spodnie' || product.productName.toLowerCase().includes('trousers')) {
       matches.push('women-trousers-1.jpg', 'women-trousers-3.jpg');
+    } else if (product.subcategory === 'bluzki' || product.productName.toLowerCase().includes('bluzka')) {
+      // Use sweater for blouse as closest match
+      matches.push('women-sweater-1.jpg');
     } else {
       matches.push('women-shorts-1.jpg', 'women-sweater-1.jpg');
     }
