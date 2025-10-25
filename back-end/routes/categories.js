@@ -1,48 +1,73 @@
 const express = require('express');
-const router = express.Router();
-const Category = require('../models/Category');
 const Product = require('../models/Product');
+const router = express.Router();
 
-// GET /categories/:gender - Get category data for specific gender
-router.get('/:gender', async (req, res) => {
+// GET /women - Get women's category data
+router.get('/women', async (req, res) => {
   try {
-    const { gender } = req.params;
-    
-    // Find category
-    const category = await Category.findOne({ gender });
-    
-    if (!category) {
-      return res.status(404).json({ error: 'Category not found' });
-    }
-    
-    // Populate bestsellers with actual product data
-    const bestsellers = await Product.find({
-      _id: { $in: category.bestsellers },
-      isBestseller: true
-    });
-    
-    const response = {
+    // Get bestsellers for women
+    const bestsellers = await Product.find({ 
+      gender: 'women', 
+      isBestseller: true 
+    }).limit(6);
+
+    // Get a random product image for hero
+    const heroProduct = await Product.findOne({ gender: 'women' });
+    const heroImageUrl = heroProduct ? heroProduct.photos[0] : null;
+
+    res.json({
       bestsellers,
-      description: category.description,
-      maintenanceInfo: category.maintenanceInfo,
-      heroImageUrl: category.heroImageUrl
-    };
-    
-    res.json(response);
+      heroImageUrl
+    });
   } catch (error) {
-    console.error('Error fetching category:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error fetching women category:', error);
+    res.status(500).json({ error: 'Failed to fetch women category data' });
   }
 });
 
-// GET /categories - Get all categories
-router.get('/', async (req, res) => {
+// GET /men - Get men's category data
+router.get('/men', async (req, res) => {
   try {
-    const categories = await Category.find();
-    res.json(categories);
+    // Get bestsellers for men
+    const bestsellers = await Product.find({ 
+      gender: 'men', 
+      isBestseller: true 
+    }).limit(6);
+
+    // Get a random product image for hero
+    const heroProduct = await Product.findOne({ gender: 'men' });
+    const heroImageUrl = heroProduct ? heroProduct.photos[0] : null;
+
+    res.json({
+      bestsellers,
+      heroImageUrl
+    });
   } catch (error) {
-    console.error('Error fetching categories:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error fetching men category:', error);
+    res.status(500).json({ error: 'Failed to fetch men category data' });
+  }
+});
+
+// GET /children - Get children's category data
+router.get('/children', async (req, res) => {
+  try {
+    // Get bestsellers for children
+    const bestsellers = await Product.find({ 
+      gender: 'children', 
+      isBestseller: true 
+    }).limit(6);
+
+    // Get a random product image for hero
+    const heroProduct = await Product.findOne({ gender: 'children' });
+    const heroImageUrl = heroProduct ? heroProduct.photos[0] : null;
+
+    res.json({
+      bestsellers,
+      heroImageUrl
+    });
+  } catch (error) {
+    console.error('Error fetching children category:', error);
+    res.status(500).json({ error: 'Failed to fetch children category data' });
   }
 });
 

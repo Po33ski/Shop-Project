@@ -17,6 +17,9 @@ app.use('/categories', require('./routes/categories'));
 app.use('/favourites', require('./routes/favourites'));
 app.use('/upload', require('./routes/upload'));
 
+// Category endpoints for frontend compatibility
+app.use('/', require('./routes/categories'));
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });

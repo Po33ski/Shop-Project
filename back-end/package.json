@@ -10,7 +10,9 @@
     "seed": "node scripts/seedData.js",
     "test-azure": "node scripts/testAzureBlob.js",
     "upload-images": "node scripts/bulkUpload.js",
-    "migrate-images": "node scripts/migrateImages.js"
+    "migrate-images": "node scripts/migrateImages.js",
+    "update-urls": "node scripts/updateProductUrls.js",
+    "fix-images": "node scripts/fixProductImages.js"
   },
   "keywords": ["ecommerce", "mongodb", "express"],
   "author": "",
