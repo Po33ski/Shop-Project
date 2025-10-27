@@ -1,6 +1,9 @@
 const express = require('express');
 const Product = require('../models/Product');
 const router = express.Router();
+require('dotenv').config();
+
+const AZURE_STORAGE_BASE_URL = process.env.AZURE_STORAGE_BASE_URL || 'https://shopstorage1523.blob.core.windows.net/product-images/';
 
 // GET /women - Get women's category data
 router.get('/women', async (req, res) => {
@@ -12,7 +15,7 @@ router.get('/women', async (req, res) => {
     }).limit(6);
 
     // Get dedicated hero image
-    const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/women.jpg';
+    const heroImageUrl = `${AZURE_STORAGE_BASE_URL}women.jpg`;
 
     res.json({
       bestsellers,
@@ -34,7 +37,7 @@ router.get('/men', async (req, res) => {
     }).limit(6);
 
     // Get dedicated hero image
-    const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/men.jpg';
+    const heroImageUrl = `${AZURE_STORAGE_BASE_URL}men.jpg`;
 
     res.json({
       bestsellers,
@@ -56,7 +59,7 @@ router.get('/children', async (req, res) => {
     }).limit(6);
 
     // Get dedicated hero image
-    const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/children.jpg';
+    const heroImageUrl = `${AZURE_STORAGE_BASE_URL}children.jpg`;
 
     res.json({
       bestsellers,

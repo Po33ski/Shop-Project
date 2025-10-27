@@ -10,7 +10,7 @@ export function FavouritesList({ favourites }) {
         <div>
           {favourites?.map((favourite) => {
             return (
-              <FavouriteProduct key={favourite.id} favourite={favourite} />
+              <FavouriteProduct key={favourite._id} favourite={favourite} />
             );
           })}
         </div>

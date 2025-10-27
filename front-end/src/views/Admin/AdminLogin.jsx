@@ -34,9 +34,10 @@ export function AdminLogin() {
     setError('');
 
     // Simple hardcoded credentials (in production, use proper authentication)
+    // TODO: Move to environment variables for production
     const ADMIN_CREDENTIALS = {
-      username: 'admin',
-      password: 'admin123'
+      username: import.meta.env.VITE_ADMIN_USERNAME || 'admin',
+      password: import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'
     };
 
     if (formData.username === ADMIN_CREDENTIALS.username && 
@@ -108,8 +109,9 @@ export function AdminLogin() {
 
           <div className={styles.credentialsInfo}>
             <h4>Dane testowe:</h4>
-            <p><strong>Użytkownik:</strong> admin</p>
-            <p><strong>Hasło:</strong> admin123</p>
+            <p><strong>Użytkownik:</strong> {import.meta.env.VITE_ADMIN_USERNAME || 'admin'}</p>
+            <p><strong>Hasło:</strong> {import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'}</p>
+            <p><small>⚠️ W produkcji użyj zmiennych środowiskowych VITE_ADMIN_USERNAME i VITE_ADMIN_PASSWORD</small></p>
           </div>
         </div>
       </div>

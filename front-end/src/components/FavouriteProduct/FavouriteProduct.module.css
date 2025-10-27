@@ -6,6 +6,16 @@
   margin: 0.5rem 0;
 }
 
+.errorMessage {
+  color: #e74c3c;
+  font-weight: 600;
+  padding: 1rem;
+  background-color: #fdf2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
 .favouriteProduct img {
   width: 85px;
   height: 140px;

@@ -1,12 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const Favourite = require('../models/Favourite');
+const Product = require('../models/Product');
 
-// GET /favourites - Get all favourites
+// GET /favourites - Get all favourites with product data
 router.get('/', async (req, res) => {
   try {
     const favourites = await Favourite.find().sort({ createdAt: -1 });
-    res.json(favourites);
+    
+    // Populate product data for each favourite
+    const favouritesWithProducts = await Promise.all(
+      favourites.map(async (favourite) => {
+        const product = await Product.findOne({ id: favourite.productId });
+        return {
+          ...favourite.toObject(),
+          product: product || null // Handle case where product might not exist
+        };
+      })
+    );
+    
+    res.json(favouritesWithProducts);
   } catch (error) {
     console.error('Error fetching favourites:', error);
     res.status(500).json({ error: 'Internal server error' });
