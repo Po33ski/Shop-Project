@@ -4,7 +4,7 @@ import HEART from "../../assets/heart.svg";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
-import { AdminConsoleButton } from "../AdminConsoleButton/AdminConsoleButton";
+
 
 export function IconMenu() {
   const [cartItems] = useContext(CartContext);
@@ -12,9 +12,6 @@ export function IconMenu() {
 
   return (
     <ul className={styles.iconMenu}>
-      <li>
-        <AdminConsoleButton />
-      </li>
       <li>
         <Link to="/ulubione">
           <img src={HEART} />

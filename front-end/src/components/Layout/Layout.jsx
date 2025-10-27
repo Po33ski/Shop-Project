@@ -12,7 +12,7 @@ import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { CURRENCIES } from "../../constants/currencies";
 import { CartContext } from "../../contexts/CartContext";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-
+import { AdminConsoleButton } from "../AdminConsoleButton/AdminConsoleButton";
 export function Layout() {
   const [currency, setCurrency] = useLocalStorage(
     "selected_currency",
@@ -47,6 +47,7 @@ export function Layout() {
               </div>
               <Logo />
               <div>
+                <AdminConsoleButton />
                 <CurrencySelector />
                 <IconMenu />
               </div>
