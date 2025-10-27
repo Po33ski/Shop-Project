@@ -6,10 +6,12 @@ export function ImageUpload({
   accept = 'image/jpeg,image/jpg',
   multiple = true,
   onChange,
+  existingPhotos = [],
   children 
 }) {
   const fileInputRef = useRef(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [removedPhotos, setRemovedPhotos] = useState([]);
 
   const handleAreaClick = () => {
     fileInputRef.current?.click();
@@ -45,6 +47,23 @@ export function ImageUpload({
     }
   };
 
+  const removeExistingPhoto = (index) => {
+    const photoToRemove = existingPhotos[index];
+    setRemovedPhotos(prev => [...prev, photoToRemove]);
+    
+    // Trigger onChange to notify parent
+    if (onChange) {
+      const event = {
+        target: {
+          files: fileInputRef.current?.files || new DataTransfer().files,
+          name: name,
+          removedPhotos: [...removedPhotos, photoToRemove]
+        }
+      };
+      onChange(event);
+    }
+  };
+
   return (
     <div className={styles.imageUpload}>
       <input
@@ -63,9 +82,38 @@ export function ImageUpload({
         {children || '📷 Kliknij aby wybrać zdjęcia (JPG)'}
       </div>
       
+      {/* Existing Photos */}
+      {existingPhotos.length > 0 && (
+        <div className={styles.existingPhotos}>
+          <h4>Obecne zdjęcia:</h4>
+          <div className={styles.photosGrid}>
+            {existingPhotos.map((photo, index) => (
+              <div key={index} className={styles.photoItem}>
+                <img 
+                  src={photo} 
+                  alt={`Zdjęcie ${index + 1}`}
+                  className={styles.photoPreview}
+                />
+                <button
+                  type="button"
+                  className={styles.removeBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeExistingPhoto(index);
+                  }}
+                >
+                  ❌
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* New Files */}
       {selectedFiles.length > 0 && (
         <div className={styles.selectedFiles}>
-          <h4>Wybrane pliki:</h4>
+          <h4>Nowe pliki:</h4>
           {selectedFiles.map((file, index) => (
             <div key={index} className={styles.fileItem}>
               <span className={styles.fileName}>📄 {file.name}</span>

@@ -11,8 +11,6 @@ import { TopBar } from "../TopBar/TopBar";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { CURRENCIES } from "../../constants/currencies";
 import { CartContext } from "../../contexts/CartContext";
-import { AdminProvider } from "../../contexts/AdminContext";
-import { AdminConsoleButton } from "../AdminConsoleButton/AdminConsoleButton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 export function Layout() {
@@ -37,31 +35,28 @@ export function Layout() {
 
   return (
     <>
-      <AdminProvider>
-        <CartContext.Provider
-          value={[cartItems, addProductToCart, deleteProductFromCart]}
-        >
-          <CurrencyContext.Provider value={[currency, setCurrency]}>
-            <MainContent>
-              <TopBar>
-                <div>
-                  <HamburgerMenu />
-                  <MainMenu />
-                </div>
-                <Logo />
-                <div>
-                  <AdminConsoleButton />
-                  <CurrencySelector />
-                  <IconMenu />
-                </div>
-              </TopBar>
-              <CategoryMenu />
-              <Outlet />
-            </MainContent>
-            <Footer />
-          </CurrencyContext.Provider>
-        </CartContext.Provider>
-      </AdminProvider>
+      <CartContext.Provider
+        value={[cartItems, addProductToCart, deleteProductFromCart]}
+      >
+        <CurrencyContext.Provider value={[currency, setCurrency]}>
+          <MainContent>
+            <TopBar>
+              <div>
+                <HamburgerMenu />
+                <MainMenu />
+              </div>
+              <Logo />
+              <div>
+                <CurrencySelector />
+                <IconMenu />
+              </div>
+            </TopBar>
+            <CategoryMenu />
+            <Outlet />
+          </MainContent>
+          <Footer />
+        </CurrencyContext.Provider>
+      </CartContext.Provider>
     </>
   );
 }

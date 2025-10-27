@@ -21,3 +21,47 @@
 .adminConsoleBtn:active {
   transform: translateY(0);
 }
+
+.adminButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.logoutBtn {
+  background-color: #dc3545;
+  color: var(--color-white);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.logoutBtn:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .adminButtons {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .adminConsoleBtn,
+  .logoutBtn {
+    font-size: 12px;
+    padding: 4px 8px;
+    margin-right: 0;
+  }
+}

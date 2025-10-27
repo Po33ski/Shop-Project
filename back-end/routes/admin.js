@@ -218,7 +218,8 @@ router.put('/products/:id', upload.array('photos', 5), async (req, res) => {
       subcategory,
       gender,
       description,
-      isBestseller
+      isBestseller,
+      removedPhotos
     } = req.body;
 
     // Update fields
@@ -235,13 +236,33 @@ router.put('/products/:id', upload.array('photos', 5), async (req, res) => {
     if (description !== undefined) product.description = description;
     if (isBestseller !== undefined) product.isBestseller = isBestseller === 'true';
 
-    // Handle new images
+    // Handle removed photos
+    if (removedPhotos) {
+      try {
+        const removedPhotosArray = JSON.parse(removedPhotos);
+        for (const photoUrl of removedPhotosArray) {
+          const fileName = photoUrl.split('/').pop();
+          await deleteImageFromAzure(fileName);
+        }
+        // Remove from product photos
+        product.photos = product.photos.filter(photo => !removedPhotosArray.includes(photo));
+      } catch (error) {
+        console.error('Error parsing removed photos:', error);
+      }
+    }
+
+    // Handle new images (only if files are uploaded)
     if (req.files && req.files.length > 0) {
       const newPhotoUrls = [];
       for (let i = 0; i < req.files.length; i++) {
         const file = req.files[i];
         const fileName = generateSafeFileName(file.originalname, i);
-        const imageUrl = await uploadImageToAzure(file, fileName);
+        const tags = {
+          productName: product.productName.toLowerCase(),
+          category: product.category.toLowerCase(),
+          gender: product.gender.toLowerCase(),
+        };
+        const imageUrl = await uploadImageToAzure(file, fileName, tags);
         newPhotoUrls.push(imageUrl);
       }
       

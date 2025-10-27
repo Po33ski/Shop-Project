@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, useLoaderData, useActionData } from 'react-router-dom';
+import { useNavigate, useParams, useLoaderData, useActionData, useSubmit } from 'react-router-dom';
 import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
 import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
 import { AdminButton } from '../../components/AdminButton/AdminButton';
@@ -19,6 +19,7 @@ export function AdminEditProduct() {
   const { id } = useParams();
   const product = useLoaderData();
   const actionData = useActionData();
+  const submit = useSubmit();
   const [formData, setFormData] = useState({
     productName: '',
     price: '',
@@ -26,7 +27,9 @@ export function AdminEditProduct() {
     subcategory: '',
     gender: 'women',
     description: '',
-    photos: []
+    photos: [],
+    newPhotos: [],
+    removedPhotos: []
   });
 
   // Load product data from API
@@ -39,7 +42,9 @@ export function AdminEditProduct() {
         subcategory: product.subcategory || '',
         gender: product.gender || 'women',
         description: product.description || '',
-        photos: product.photos || []
+        photos: product.photos || [],
+        newPhotos: [],
+        removedPhotos: []
       });
     }
   }, [product]);
@@ -64,16 +69,46 @@ export function AdminEditProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Form submission is handled by React Router action
+    console.log('Form submitted');
+    console.log('Form data:', formData);
+    
+    // Submit form data to React Router action
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('productName', formData.productName);
+    formDataToSubmit.append('price', formData.price);
+    formDataToSubmit.append('category', formData.category);
+    formDataToSubmit.append('subcategory', formData.subcategory);
+    formDataToSubmit.append('gender', formData.gender);
+    formDataToSubmit.append('description', formData.description);
+    
+    // Add removed photos
+    formData.removedPhotos.forEach(photo => {
+      formDataToSubmit.append('removedPhotos', photo);
+    });
+    
+    // Add new photos
+    const fileInput = document.querySelector('input[name="photos"]');
+    if (fileInput && fileInput.files) {
+      for (let i = 0; i < fileInput.files.length; i++) {
+        formDataToSubmit.append('photos', fileInput.files[i]);
+      }
+    }
+    
+    submit(formDataToSubmit, { method: 'POST' });
   };
 
   // Handle action result
-  if (actionData?.success) {
-    alert(actionData.message);
-    navigate('/admin/products');
-  } else if (actionData?.error) {
-    alert(`Błąd: ${actionData.error}`);
-  }
+  useEffect(() => {
+    if (actionData) {
+      console.log('Action data received:', actionData);
+      if (actionData.success) {
+        alert(actionData.message);
+        navigate('/admin/products');
+      } else if (actionData.error) {
+        alert(`Błąd: ${actionData.error}`);
+      }
+    }
+  }, [actionData, navigate]);
 
   return (
     <AdminContainer>
@@ -91,10 +126,18 @@ export function AdminEditProduct() {
 
       <AdminForm 
         method="POST" 
-        action={`/admin/products/edit/${id}`} 
         encType="multipart/form-data"
         onSubmit={handleSubmit}
       >
+        {/* Hidden inputs for removed photos */}
+        {formData.removedPhotos && formData.removedPhotos.map((photo, index) => (
+          <input
+            key={index}
+            type="hidden"
+            name="removedPhotos"
+            value={photo}
+          />
+        ))}
         <AdminFormGrid>
           <AdminFormGroup label="Nazwa produktu" required>
             <AdminInput
@@ -197,7 +240,19 @@ export function AdminEditProduct() {
         </AdminFormGrid>
 
         <AdminFormGroup label="Zdjęcia">
-          <ImageUpload />
+          <ImageUpload 
+            existingPhotos={formData.photos}
+            onChange={(e) => {
+              // Handle file changes
+              const files = Array.from(e.target.files);
+              const removedPhotos = e.target.removedPhotos || [];
+              setFormData(prev => ({
+                ...prev,
+                newPhotos: files,
+                removedPhotos: removedPhotos
+              }));
+            }}
+          />
         </AdminFormGroup>
 
         <AdminFormActions>

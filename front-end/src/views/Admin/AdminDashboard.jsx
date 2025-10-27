@@ -1,15 +1,33 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
 import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
 import { AdminCard } from '../../components/AdminCard/AdminCard';
+import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { useAdmin } from '../../contexts/AdminContext';
 import styles from './AdminDashboard.module.css';
 
 export function AdminDashboard() {
+  const navigate = useNavigate();
+  const { adminUser, logoutAdmin } = useAdmin();
+
+  const handleLogout = () => {
+    logoutAdmin();
+    navigate('/admin/login');
+  };
+
   return (
     <AdminContainer>
       <AdminHeader 
         title="🛠️ Panel Administratora"
-        subtitle="Witaj w konsoli administracyjnej sklepu"
+        subtitle={`Witaj ${adminUser?.username || 'Administratorze'}!`}
+        actions={
+          <AdminButton 
+            variant="danger" 
+            onClick={handleLogout}
+          >
+            🚪 Wyloguj się
+          </AdminButton>
+        }
       />
       
       <div className={styles.actions}>

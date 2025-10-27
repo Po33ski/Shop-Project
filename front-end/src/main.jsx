@@ -20,6 +20,9 @@ import { AdminDashboard } from "./views/Admin/AdminDashboard";
 import { AdminProductsList } from "./views/Admin/AdminProductsList";
 import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
 import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
+import { AdminLogin } from "./views/Admin/AdminLogin";
+import { AdminProtectedRoute } from "./components/AdminProtectedRoute/AdminProtectedRoute";
+import { AdminProvider } from "./contexts/AdminContext";
 import { adminProductsLoader } from "./api/adminLoader";
 import { adminProductLoader } from "./api/adminLoader";
 import { editProductAction } from "./api/editProductAction";
@@ -50,21 +53,41 @@ const router = createBrowserRouter([
         loader: favouritesLoader,
       },
       {
+        path: "/admin/login",
+        element: <AdminLogin />,
+      },
+      {
         path: "/admin",
-        element: <AdminDashboard />,
+        element: (
+          <AdminProtectedRoute>
+            <AdminDashboard />
+          </AdminProtectedRoute>
+        ),
       },
       {
         path: "/admin/products",
-        element: <AdminProductsList />,
+        element: (
+          <AdminProtectedRoute>
+            <AdminProductsList />
+          </AdminProtectedRoute>
+        ),
         loader: adminProductsLoader,
       },
       {
         path: "/admin/products/add",
-        element: <AdminAddProduct />,
+        element: (
+          <AdminProtectedRoute>
+            <AdminAddProduct />
+          </AdminProtectedRoute>
+        ),
       },
       {
         path: "/admin/products/edit/:id",
-        element: <AdminEditProduct />,
+        element: (
+          <AdminProtectedRoute>
+            <AdminEditProduct />
+          </AdminProtectedRoute>
+        ),
         loader: adminProductLoader,
         action: editProductAction,
       },
@@ -100,6 +123,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <AdminProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AdminProvider>
   </React.StrictMode>
 );
