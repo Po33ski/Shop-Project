@@ -51,23 +51,30 @@ npm start
 
 ## API Endpoints
 
+### Public Endpoints
 - `GET /health` - Health check
 - `GET /products` - Product list (with filtering and pagination)
 - `GET /products/:id` - Single product
-- `POST /products` - Add product
-- `PUT /products/:id` - Update product
-- `DELETE /products/:id` - Delete product
 - `GET /categories/:gender` - Category (women/men/children)
 - `GET /favourites` - Favourites
 - `POST /favourites` - Add to favourites
 - `DELETE /favourites/:id` - Remove from favourites
 
-### Image Upload Endpoints
+### Admin Endpoints
+- `GET /admin/products` - Admin: Product list
+- `GET /admin/products/:id` - Admin: Single product
+- `POST /admin/products` - Admin: Add product (with image upload)
+- `PUT /admin/products/:id` - Admin: Update product (with image upload)
+- `DELETE /admin/products/:id` - Admin: Delete product (with images)
+- `DELETE /admin/products/:id/photos/:index` - Admin: Delete specific photo
 
-- `POST /upload/single` - Upload single image
-- `POST /upload/multiple` - Upload multiple images
-- `DELETE /upload/:fileName` - Delete image
-- `GET /upload/list` - List all images
+## Features
+
+- **MongoDB Integration** - Full CRUD operations
+- **Azure Blob Storage** - Image upload and management
+- **Admin Panel** - Complete product management
+- **Image Upload** - JPG support with 5MB limit
+- **Frontend Compatible** - Works with existing React frontend
 
 ## Frontend compatibility
 
