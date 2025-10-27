@@ -12,13 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/products', require('./routes/products'));
-app.use('/categories', require('./routes/categories'));
-app.use('/favourites', require('./routes/favourites'));
-app.use('/upload', require('./routes/upload'));
-
-// Category endpoints for frontend compatibility
-app.use('/', require('./routes/categories'));
+app.use('/', require('./routes'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

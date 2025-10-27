@@ -20,6 +20,11 @@ import { AdminDashboard } from "./views/Admin/AdminDashboard";
 import { AdminProductsList } from "./views/Admin/AdminProductsList";
 import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
 import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
+import { adminProductsLoader } from "./api/adminLoader";
+import { adminProductLoader } from "./api/adminLoader";
+import { addProductAction } from "./api/addProductAction";
+import { editProductAction } from "./api/editProductAction";
+import { deleteProductAction } from "./api/deleteProductAction";
 
 const router = createBrowserRouter([
   {
@@ -52,14 +57,22 @@ const router = createBrowserRouter([
       {
         path: "/admin/products",
         element: <AdminProductsList />,
+        loader: adminProductsLoader,
       },
       {
         path: "/admin/products/add",
         element: <AdminAddProduct />,
+        action: addProductAction,
       },
       {
         path: "/admin/products/edit/:id",
         element: <AdminEditProduct />,
+        loader: adminProductLoader,
+        action: editProductAction,
+      },
+      {
+        path: "/admin/products/delete/:id",
+        action: deleteProductAction,
       },
       {
         path: "/:gender?",

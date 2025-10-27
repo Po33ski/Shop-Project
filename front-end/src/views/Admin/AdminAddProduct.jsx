@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useActionData } from 'react-router-dom';
 import styles from './AdminAddProduct.module.css';
 
 export function AdminAddProduct() {
   const navigate = useNavigate();
+  const actionData = useActionData();
   const [formData, setFormData] = useState({
     productName: '',
     price: '',
@@ -24,11 +25,16 @@ export function AdminAddProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement API call to add product
-    console.log('Adding product:', formData);
-    alert('Produkt został dodany! (Mock)');
-    navigate('/admin/products');
+    // Form submission is handled by React Router action
   };
+
+  // Handle action result
+  if (actionData?.success) {
+    alert(actionData.message);
+    navigate('/admin/products');
+  } else if (actionData?.error) {
+    alert(`Błąd: ${actionData.error}`);
+  }
 
   return (
     <div className={styles.addProduct}>
@@ -43,7 +49,7 @@ export function AdminAddProduct() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form method="POST" action="/admin/products/add" encType="multipart/form-data" className={styles.form}>
           <div className={styles.formGrid}>
             <div className={styles.formGroup}>
               <label htmlFor="productName">Nazwa produktu *</label>
@@ -135,10 +141,7 @@ export function AdminAddProduct() {
                 accept="image/jpeg,image/jpg"
                 multiple
                 className={styles.fileInput}
-                onChange={(e) => {
-                  // TODO: Handle image upload
-                  console.log('Selected files:', e.target.files);
-                }}
+                name="photos"
               />
               <div className={styles.uploadArea}>
                 📷 Kliknij aby wybrać zdjęcia (JPG)

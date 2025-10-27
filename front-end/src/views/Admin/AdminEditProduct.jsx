@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLoaderData, useActionData } from 'react-router-dom';
 import styles from './AdminEditProduct.module.css';
 
 export function AdminEditProduct() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const product = useLoaderData();
+  const actionData = useActionData();
   const [formData, setFormData] = useState({
     productName: '',
     price: '',
@@ -15,19 +17,20 @@ export function AdminEditProduct() {
     photos: []
   });
 
-  // TODO: Load product data from API
+  // Load product data from API
   useEffect(() => {
-    // Mock data for now
-    setFormData({
-      productName: 'Edytowany Produkt',
-      price: '199.99',
-      category: 'Odzież',
-      subcategory: 'Sukienki',
-      gender: 'women',
-      description: 'Opis produktu do edycji',
-      photos: []
-    });
-  }, [id]);
+    if (product) {
+      setFormData({
+        productName: product.productName || '',
+        price: product.price || '',
+        category: product.category || '',
+        subcategory: product.subcategory || '',
+        gender: product.gender || 'women',
+        description: product.description || '',
+        photos: product.photos || []
+      });
+    }
+  }, [product]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,11 +42,16 @@ export function AdminEditProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement API call to update product
-    console.log('Updating product:', id, formData);
-    alert('Produkt został zaktualizowany! (Mock)');
-    navigate('/admin/products');
+    // Form submission is handled by React Router action
   };
+
+  // Handle action result
+  if (actionData?.success) {
+    alert(actionData.message);
+    navigate('/admin/products');
+  } else if (actionData?.error) {
+    alert(`Błąd: ${actionData.error}`);
+  }
 
   return (
     <div className={styles.editProduct}>
@@ -58,7 +66,7 @@ export function AdminEditProduct() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form method="POST" action={`/admin/products/edit/${id}`} encType="multipart/form-data" className={styles.form}>
           <div className={styles.formGrid}>
             <div className={styles.formGroup}>
               <label htmlFor="productName">Nazwa produktu *</label>
@@ -150,10 +158,7 @@ export function AdminEditProduct() {
                 accept="image/jpeg,image/jpg"
                 multiple
                 className={styles.fileInput}
-                onChange={(e) => {
-                  // TODO: Handle image upload
-                  console.log('Selected files:', e.target.files);
-                }}
+                name="photos"
               />
               <div className={styles.uploadArea}>
                 📷 Kliknij aby wybrać zdjęcia (JPG)

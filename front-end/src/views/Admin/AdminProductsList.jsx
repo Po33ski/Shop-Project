@@ -1,12 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData, useFetcher } from 'react-router-dom';
 import styles from './AdminProductsList.module.css';
 
 export function AdminProductsList() {
-  // Na razie mock data - później połączymy z API
-  const products = [
-    { id: 1, name: 'Przykładowy Produkt 1', price: 99.99, category: 'Odzież' },
-    { id: 2, name: 'Przykładowy Produkt 2', price: 149.99, category: 'Obuwie' },
-  ];
+  const products = useLoaderData();
+  const fetcher = useFetcher();
 
   return (
     <div className={styles.productsList}>
@@ -31,30 +28,36 @@ export function AdminProductsList() {
             </thead>
             <tbody>
               {products.map(product => (
-                <tr key={product.id}>
-                  <td>{product.id}</td>
-                  <td>{product.name}</td>
+                <tr key={product._id}>
+                  <td>{product._id}</td>
+                  <td>{product.productName}</td>
                   <td>{product.price} zł</td>
                   <td>{product.category}</td>
                   <td>
                     <div className={styles.actions}>
                       <Link 
-                        to={`/admin/products/edit/${product.id}`}
+                        to={`/admin/products/edit/${product._id}`}
                         className={styles.editBtn}
                       >
                         ✏️ Edytuj
                       </Link>
-                      <button 
-                        className={styles.deleteBtn}
-                        onClick={() => {
-                          if (confirm('Czy na pewno chcesz usunąć ten produkt?')) {
-                            // TODO: Implement delete
-                            console.log('Delete product:', product.id);
+                      <fetcher.Form
+                        method="POST"
+                        action={`/admin/products/delete/${product._id}`}
+                        onSubmit={(e) => {
+                          if (!confirm('Czy na pewno chcesz usunąć ten produkt?')) {
+                            e.preventDefault();
                           }
                         }}
                       >
-                        🗑️ Usuń
-                      </button>
+                        <button 
+                          type="submit"
+                          className={styles.deleteBtn}
+                          disabled={fetcher.state === 'submitting'}
+                        >
+                          {fetcher.state === 'submitting' ? '⏳ Usuwanie...' : '🗑️ Usuń'}
+                        </button>
+                      </fetcher.Form>
                     </div>
                   </td>
                 </tr>
