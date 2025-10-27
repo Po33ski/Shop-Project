@@ -3,18 +3,20 @@
 }
 
 .loginBtn {
-  background: #007bff;
-  color: white;
+  background-color: var(--color-text-default);
+  color: var(--color-white);
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
   transition: background-color 0.2s;
 }
 
 .loginBtn:hover {
-  background: #0056b3;
+  background-color: #1a1a1a;
 }
 
 .loginModal {
@@ -52,7 +54,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--color-theme-main);
 }
 
 .buttons {
@@ -62,51 +64,59 @@
 }
 
 .submitBtn {
-  background: #28a745;
-  color: white;
+  background-color: var(--color-theme-main);
+  color: var(--color-white);
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .submitBtn:hover {
-  background: #218838;
+  background-color: #045a3a;
 }
 
 .cancelBtn {
-  background: #6c757d;
-  color: white;
+  background-color: var(--color-text-grey);
+  color: var(--color-white);
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .cancelBtn:hover {
-  background: #545b62;
+  background-color: #666;
 }
 
 .adminLoggedIn {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #28a745;
+  color: var(--color-theme-main);
   font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .logoutBtn {
-  background: #dc3545;
-  color: white;
+  background-color: var(--color-price);
+  color: var(--color-white);
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .logoutBtn:hover {
-  background: #c82333;
+  background-color: #a00a0a;
 }

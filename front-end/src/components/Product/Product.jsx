@@ -22,6 +22,9 @@ export function Product({ product }) {
         setImageLoaded(true);
       };
       img.src = product.photos[0];
+    } else {
+      // If no photos, show placeholder immediately
+      setImageLoaded(true);
     }
   }, [product.photos]);
 
@@ -32,11 +35,15 @@ export function Product({ product }) {
       }/${product.id}`}
       className={styles.product}
     >
-      {imageLoaded ? (
+      {imageLoaded && imageSrc ? (
         <img src={imageSrc} alt={product.productName} />
       ) : (
         <div className={styles.imagePlaceholder}>
-          <div className={styles.loadingSpinner}>⏳</div>
+          {imageLoaded ? (
+            <div className={styles.noImage}>📷</div>
+          ) : (
+            <div className={styles.loadingSpinner}>⏳</div>
+          )}
         </div>
       )}
       <h3>{product.productName}</h3>

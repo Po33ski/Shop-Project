@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
   },
   subcategory: {
     type: String,
-    required: true
+    required: false // Made optional for admin uploads
   },
   productName: {
     type: String,
@@ -25,27 +25,33 @@ const productSchema = new mongoose.Schema({
   },
   brand: {
     type: String,
+    required: false, // Made optional for admin uploads
+    default: 'Unknown'
+  },
+  price: {
+    type: Number,
     required: true
   },
   pricePLN: {
     type: Number,
-    required: true
+    required: false // Keep for backward compatibility
   },
   priceUSD: {
     type: Number,
-    required: true
+    required: false // Keep for backward compatibility
   },
   photos: [{
     type: String,
-    required: true
+    required: false // Made optional for products without images
   }],
   description: {
     type: String,
-    required: true
+    required: false // Made optional for admin uploads
   },
   maintenanceInfo: {
     type: String,
-    required: true
+    required: false, // Made optional for admin uploads
+    default: 'Brak informacji o pielęgnacji'
   },
   isBestseller: {
     type: Boolean,

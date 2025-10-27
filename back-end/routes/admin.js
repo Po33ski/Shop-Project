@@ -4,6 +4,25 @@ const { BlobServiceClient } = require('@azure/storage-blob');
 const Product = require('../models/Product');
 const router = express.Router();
 
+// Helper function to generate safe file names
+const generateSafeFileName = (originalName, index) => {
+  const timestamp = Date.now();
+  const randomSuffix = Math.random().toString(36).substring(2, 8);
+  
+  // Remove extension and clean the name
+  const nameWithoutExt = originalName.replace(/\.[^/.]+$/, '');
+  const cleanName = nameWithoutExt
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '-') // Replace non-alphanumeric with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+  
+  // Ensure we have a name
+  const finalName = cleanName || 'image';
+  
+  return `${timestamp}-${index}-${finalName}.jpg`;
+};
+
 // Configure multer for file uploads
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -91,7 +110,7 @@ router.get('/products', async (req, res) => {
 // GET /admin/products/:id - Get single product for admin
 router.get('/products/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -137,22 +156,32 @@ router.post('/products', upload.array('photos', 5), async (req, res) => {
     if (req.files && req.files.length > 0) {
       for (let i = 0; i < req.files.length; i++) {
         const file = req.files[i];
-        const fileName = `${Date.now()}-${i}-${file.originalname}`;
+        const fileName = generateSafeFileName(file.originalname, i);
         const imageUrl = await uploadImageToAzure(file, fileName);
         photoUrls.push(imageUrl);
       }
     }
 
+    // Generate unique ID first
+    const lastProduct = await Product.findOne().sort({ id: -1 });
+    const newId = lastProduct ? lastProduct.id + 1 : 1;
+
     // Create product
+    const productPrice = parseFloat(price);
     const product = new Product({
+      id: newId,
       productName,
-      price: parseFloat(price),
+      price: productPrice,
+      pricePLN: productPrice, // For frontend compatibility
+      priceUSD: Math.round(productPrice * 0.25 * 100) / 100, // Approximate USD conversion
       category,
-      subcategory,
+      subcategory: subcategory || '',
       gender,
-      description,
+      description: description || '',
       photos: photoUrls,
-      isBestseller: isBestseller === 'true'
+      isBestseller: isBestseller === 'true',
+      brand: 'Unknown', // Default brand for admin uploads
+      maintenanceInfo: 'Brak informacji o pielęgnacji' // Default maintenance info
     });
 
     await product.save();
@@ -174,7 +203,7 @@ router.post('/products', upload.array('photos', 5), async (req, res) => {
 // PUT /admin/products/:id - Update product
 router.put('/products/:id', upload.array('photos', 5), async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -194,11 +223,16 @@ router.put('/products/:id', upload.array('photos', 5), async (req, res) => {
 
     // Update fields
     if (productName) product.productName = productName;
-    if (price) product.price = parseFloat(price);
+    if (price) {
+      const productPrice = parseFloat(price);
+      product.price = productPrice;
+      product.pricePLN = productPrice; // For frontend compatibility
+      product.priceUSD = Math.round(productPrice * 0.25 * 100) / 100; // Approximate USD conversion
+    }
     if (category) product.category = category;
-    if (subcategory) product.subcategory = subcategory;
+    if (subcategory !== undefined) product.subcategory = subcategory;
     if (gender) product.gender = gender;
-    if (description) product.description = description;
+    if (description !== undefined) product.description = description;
     if (isBestseller !== undefined) product.isBestseller = isBestseller === 'true';
 
     // Handle new images
@@ -206,7 +240,7 @@ router.put('/products/:id', upload.array('photos', 5), async (req, res) => {
       const newPhotoUrls = [];
       for (let i = 0; i < req.files.length; i++) {
         const file = req.files[i];
-        const fileName = `${Date.now()}-${i}-${file.originalname}`;
+        const fileName = generateSafeFileName(file.originalname, i);
         const imageUrl = await uploadImageToAzure(file, fileName);
         newPhotoUrls.push(imageUrl);
       }
@@ -234,7 +268,7 @@ router.put('/products/:id', upload.array('photos', 5), async (req, res) => {
 // DELETE /admin/products/:id - Delete product
 router.delete('/products/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -250,7 +284,7 @@ router.delete('/products/:id', async (req, res) => {
     }
 
     // Delete product from database
-    await Product.findByIdAndDelete(req.params.id);
+    await Product.deleteOne({ id: parseInt(req.params.id) });
 
     res.json({
       success: true,
@@ -268,7 +302,7 @@ router.delete('/products/:id', async (req, res) => {
 // DELETE /admin/products/:id/photos/:photoIndex - Delete specific photo
 router.delete('/products/:id/photos/:photoIndex', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) {
       return res.status(404).json({
         success: false,

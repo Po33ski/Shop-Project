@@ -1,71 +1,70 @@
-import { Link, useLoaderData, useFetcher } from 'react-router-dom';
-import styles from './AdminProductsList.module.css';
+import { Link, useLoaderData, useFetcher, useNavigate } from 'react-router-dom';
+import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
+import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
+import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { AdminTable } from '../../components/AdminTable/AdminTable';
+import { useEffect } from 'react';
 
 export function AdminProductsList() {
   const products = useLoaderData();
   const fetcher = useFetcher();
+  const navigate = useNavigate();
+
+  // Handle fetcher response
+  useEffect(() => {
+    if (fetcher.data) {
+      if (fetcher.data.success) {
+        alert('Produkt został usunięty pomyślnie!');
+        window.location.reload(); // Refresh the page to update the list
+      } else {
+        alert(`Błąd: ${fetcher.data.error}`);
+      }
+    }
+  }, [fetcher.data]);
+
+  const columns = ['ID', 'Nazwa', 'Cena', 'Kategoria'];
+  
+  const tableData = products.map(product => ({
+    id: product.id, // Use product.id instead of product._id
+    name: product.productName,
+    price: `${product.price} zł`,
+    category: product.category
+  }));
+
+  const handleEdit = (row) => {
+    navigate(`/admin/products/edit/${row.id}`);
+  };
+
+  const handleDelete = (row) => {
+    if (confirm('Czy na pewno chcesz usunąć ten produkt?')) {
+      // Use fetcher to submit delete action
+      fetcher.submit(null, {
+        method: 'POST',
+        action: `/admin/products/delete/${row.id}`
+      });
+    }
+  };
 
   return (
-    <div className={styles.productsList}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1>📦 Zarządzanie Produktami</h1>
-          <Link to="/admin/products/add" className={styles.addBtn}>
-            ➕ Dodaj Produkt
+    <AdminContainer>
+      <AdminHeader 
+        title="📦 Zarządzanie Produktami"
+        actions={
+          <Link to="/admin/products/add">
+            <AdminButton variant="primary">
+              ➕ Dodaj Produkt
+            </AdminButton>
           </Link>
-        </div>
+        }
+      />
 
-        <div className={styles.tableContainer}>
-          <table className={styles.productsTable}>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nazwa</th>
-                <th>Cena</th>
-                <th>Kategoria</th>
-                <th>Akcje</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(product => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.productName}</td>
-                  <td>{product.price} zł</td>
-                  <td>{product.category}</td>
-                  <td>
-                    <div className={styles.actions}>
-                      <Link 
-                        to={`/admin/products/edit/${product._id}`}
-                        className={styles.editBtn}
-                      >
-                        ✏️ Edytuj
-                      </Link>
-                      <fetcher.Form
-                        method="POST"
-                        action={`/admin/products/delete/${product._id}`}
-                        onSubmit={(e) => {
-                          if (!confirm('Czy na pewno chcesz usunąć ten produkt?')) {
-                            e.preventDefault();
-                          }
-                        }}
-                      >
-                        <button 
-                          type="submit"
-                          className={styles.deleteBtn}
-                          disabled={fetcher.state === 'submitting'}
-                        >
-                          {fetcher.state === 'submitting' ? '⏳ Usuwanie...' : '🗑️ Usuń'}
-                        </button>
-                      </fetcher.Form>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <AdminTable
+        columns={columns}
+        data={tableData}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        deleteLoading={fetcher.state === 'submitting'}
+      />
+    </AdminContainer>
   );
 }

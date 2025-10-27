@@ -1,20 +1,21 @@
 .adminConsoleBtn {
-  background: #ff6b35;
-  color: white;
+  background-color: var(--color-text-default);
+  color: var(--color-white);
   text-decoration: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
+  text-transform: uppercase;
   transition: all 0.2s;
   display: inline-block;
   margin-right: 12px;
 }
 
 .adminConsoleBtn:hover {
-  background: #e55a2b;
+  background-color: #1a1a1a;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .adminConsoleBtn:active {

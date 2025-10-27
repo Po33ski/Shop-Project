@@ -1,6 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLoaderData, useActionData } from 'react-router-dom';
-import styles from './AdminEditProduct.module.css';
+import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
+import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
+import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { 
+  AdminForm, 
+  AdminFormGrid, 
+  AdminFormGroup, 
+  AdminInput, 
+  AdminSelect, 
+  AdminTextarea, 
+  AdminFormActions 
+} from '../../components/AdminForm/AdminForm';
+import { ImageUpload } from '../../components/ImageUpload/ImageUpload';
 
 export function AdminEditProduct() {
   const navigate = useNavigate();
@@ -34,10 +46,20 @@ export function AdminEditProduct() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // Reset subcategory when category changes
+    if (name === 'category') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        subcategory: '' // Reset subcategory
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -54,132 +76,143 @@ export function AdminEditProduct() {
   }
 
   return (
-    <div className={styles.editProduct}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1>✏️ Edytuj Produkt #{id}</h1>
-          <button 
+    <AdminContainer>
+      <AdminHeader 
+        title={`✏️ Edytuj Produkt #${id}`}
+        actions={
+          <AdminButton 
+            variant="outline" 
             onClick={() => navigate('/admin/products')}
-            className={styles.backBtn}
           >
             ← Powrót do listy
-          </button>
-        </div>
+          </AdminButton>
+        }
+      />
 
-        <form method="POST" action={`/admin/products/edit/${id}`} encType="multipart/form-data" className={styles.form}>
-          <div className={styles.formGrid}>
-            <div className={styles.formGroup}>
-              <label htmlFor="productName">Nazwa produktu *</label>
-              <input
-                type="text"
-                id="productName"
-                name="productName"
-                value={formData.productName}
-                onChange={handleInputChange}
-                required
-                className={styles.input}
-              />
-            </div>
+      <AdminForm 
+        method="POST" 
+        action={`/admin/products/edit/${id}`} 
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}
+      >
+        <AdminFormGrid>
+          <AdminFormGroup label="Nazwa produktu" required>
+            <AdminInput
+              name="productName"
+              value={formData.productName}
+              onChange={handleInputChange}
+              required
+            />
+          </AdminFormGroup>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="price">Cena (zł) *</label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={formData.price}
-                onChange={handleInputChange}
-                required
-                min="0"
-                step="0.01"
-                className={styles.input}
-              />
-            </div>
+          <AdminFormGroup label="Cena (zł)" required>
+            <AdminInput
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              required
+              min="0"
+              step="0.01"
+            />
+          </AdminFormGroup>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="gender">Płeć *</label>
-              <select
-                id="gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleInputChange}
-                required
-                className={styles.select}
-              >
-                <option value="women">Kobieta</option>
-                <option value="men">Mężczyzna</option>
-                <option value="children">Dziecko</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="category">Kategoria *</label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                required
-                className={styles.input}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="subcategory">Podkategoria</label>
-              <input
-                type="text"
-                id="subcategory"
-                name="subcategory"
-                value={formData.subcategory}
-                onChange={handleInputChange}
-                className={styles.input}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="description">Opis</label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows="4"
-                className={styles.textarea}
-              />
-            </div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Zdjęcia</label>
-            <div className={styles.imageUpload}>
-              <input
-                type="file"
-                accept="image/jpeg,image/jpg"
-                multiple
-                className={styles.fileInput}
-                name="photos"
-              />
-              <div className={styles.uploadArea}>
-                📷 Kliknij aby wybrać zdjęcia (JPG)
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.formActions}>
-            <button type="submit" className={styles.submitBtn}>
-              💾 Zapisz Zmiany
-            </button>
-            <button 
-              type="button" 
-              onClick={() => navigate('/admin/products')}
-              className={styles.cancelBtn}
+          <AdminFormGroup label="Płeć" required>
+            <AdminSelect
+              name="gender"
+              value={formData.gender}
+              onChange={handleInputChange}
+              required
             >
-              ❌ Anuluj
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+              <option value="women">Kobieta</option>
+              <option value="men">Mężczyzna</option>
+              <option value="children">Dziecko</option>
+            </AdminSelect>
+          </AdminFormGroup>
+
+          <AdminFormGroup label="Kategoria" required>
+            <AdminSelect
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Wybierz kategorię</option>
+              <option value="odziez">Odzież</option>
+              <option value="obuwie">Obuwie</option>
+              <option value="akcesoria">Akcesoria</option>
+            </AdminSelect>
+          </AdminFormGroup>
+
+          <AdminFormGroup label="Podkategoria">
+            <AdminSelect
+              name="subcategory"
+              value={formData.subcategory}
+              onChange={handleInputChange}
+            >
+              <option value="">Wybierz podkategorię</option>
+              {formData.category === 'odziez' && (
+                <>
+                  <option value="koszulki">Koszulki</option>
+                  <option value="spodnie">Spodnie</option>
+                  <option value="sukienki">Sukienki</option>
+                  <option value="bluzki">Bluzki</option>
+                  <option value="spodniczki">Spódniczki</option>
+                  <option value="swetry">Swetry</option>
+                  <option value="kurtki">Kurtki</option>
+                  <option value="płaszcze">Płaszcze</option>
+                </>
+              )}
+              {formData.category === 'obuwie' && (
+                <>
+                  <option value="sneakers">Sneakers</option>
+                  <option value="buty">Buty</option>
+                  <option value="szpilki">Szpilki</option>
+                  <option value="sandały">Sandały</option>
+                  <option value="kalosze">Kalosze</option>
+                  <option value="botki">Botki</option>
+                </>
+              )}
+              {formData.category === 'akcesoria' && (
+                <>
+                  <option value="torebki">Torebki</option>
+                  <option value="plecaki">Plecaki</option>
+                  <option value="zegarki">Zegarki</option>
+                  <option value="biżuteria">Biżuteria</option>
+                  <option value="paski">Paski</option>
+                  <option value="czapki">Czapki</option>
+                  <option value="szaliki">Szaliki</option>
+                </>
+              )}
+            </AdminSelect>
+          </AdminFormGroup>
+
+          <AdminFormGroup label="Opis">
+            <AdminTextarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+          </AdminFormGroup>
+        </AdminFormGrid>
+
+        <AdminFormGroup label="Zdjęcia">
+          <ImageUpload />
+        </AdminFormGroup>
+
+        <AdminFormActions>
+          <AdminButton type="submit" variant="secondary">
+            💾 Zapisz Zmiany
+          </AdminButton>
+          <AdminButton 
+            type="button" 
+            variant="danger"
+            onClick={() => navigate('/admin/products')}
+          >
+            ❌ Anuluj
+          </AdminButton>
+        </AdminFormActions>
+      </AdminForm>
+    </AdminContainer>
   );
 }

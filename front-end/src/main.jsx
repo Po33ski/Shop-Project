@@ -22,7 +22,6 @@ import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
 import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
 import { adminProductsLoader } from "./api/adminLoader";
 import { adminProductLoader } from "./api/adminLoader";
-import { addProductAction } from "./api/addProductAction";
 import { editProductAction } from "./api/editProductAction";
 import { deleteProductAction } from "./api/deleteProductAction";
 
@@ -62,7 +61,6 @@ const router = createBrowserRouter([
       {
         path: "/admin/products/add",
         element: <AdminAddProduct />,
-        action: addProductAction,
       },
       {
         path: "/admin/products/edit/:id",

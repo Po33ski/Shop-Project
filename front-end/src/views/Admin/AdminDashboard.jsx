@@ -1,25 +1,34 @@
 import { Link } from 'react-router-dom';
+import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
+import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
+import { AdminCard } from '../../components/AdminCard/AdminCard';
 import styles from './AdminDashboard.module.css';
 
 export function AdminDashboard() {
   return (
-    <div className={styles.dashboard}>
-      <div className={styles.container}>
-        <h1>🛠️ Panel Administratora</h1>
-        <p>Witaj w konsoli administracyjnej sklepu</p>
+    <AdminContainer>
+      <AdminHeader 
+        title="🛠️ Panel Administratora"
+        subtitle="Witaj w konsoli administracyjnej sklepu"
+      />
+      
+      <div className={styles.actions}>
+        <Link to="/admin/products">
+          <AdminCard
+            icon="📦"
+            title="Zarządzaj Produktami"
+            description="Dodawaj, edytuj i usuwaj produkty"
+          />
+        </Link>
         
-        <div className={styles.actions}>
-          <Link to="/admin/products" className={styles.actionCard}>
-            <h3>📦 Zarządzaj Produktami</h3>
-            <p>Dodawaj, edytuj i usuwaj produkty</p>
-          </Link>
-          
-          <Link to="/admin/products/add" className={styles.actionCard}>
-            <h3>➕ Dodaj Nowy Produkt</h3>
-            <p>Dodaj nowy produkt do sklepu</p>
-          </Link>
-        </div>
+        <Link to="/admin/products/add">
+          <AdminCard
+            icon="➕"
+            title="Dodaj Nowy Produkt"
+            description="Dodaj nowy produkt do sklepu"
+          />
+        </Link>
       </div>
-    </div>
+    </AdminContainer>
   );
 }
