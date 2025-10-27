@@ -2,3 +2,16 @@
   text-transform: uppercase;
   text-align: center;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1rem;
+  }
+}

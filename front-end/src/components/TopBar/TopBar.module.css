@@ -7,8 +7,29 @@
   align-items: center;
 }
 
+.topBar > :first-child {
+  justify-content: flex-start;
+}
+
 .topBar > div {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.topBar > div:first-child {
+  justify-content: flex-start;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .topBar {
+    grid-template-columns: auto 1fr auto;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+  
+  .topBar > div {
+    gap: 0.5rem;
+  }
 }

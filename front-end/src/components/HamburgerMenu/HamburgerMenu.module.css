@@ -1,0 +1,150 @@
+/* Hamburger button - visible only on mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.hamburger span {
+  width: 2rem;
+  height: 0.2rem;
+  background: var(--color-text-default);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Mobile menu */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  max-width: 300px;
+  height: 100vh;
+  background: var(--color-white);
+  transition: left 0.3s ease-in-out;
+  z-index: 1002;
+  overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobileMenu.open {
+  left: 0;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Menu header */
+.menuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-theme-light);
+}
+
+.menuHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-default);
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--color-text-grey);
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: var(--color-text-default);
+}
+
+/* Gender list */
+.genderList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.genderList li {
+  border-bottom: 1px solid var(--color-theme-light);
+}
+
+.genderList li a {
+  display: block;
+  padding: 1.2rem 1.5rem;
+  color: var(--color-text-default);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: background-color 0.2s, padding-left 0.2s;
+}
+
+.genderList li a:hover {
+  background-color: var(--color-theme-light);
+  padding-left: 2rem;
+}
+
+.genderList li a.active {
+  background-color: var(--color-theme-main);
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+/* Mobile responsive - show hamburger */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+}
+

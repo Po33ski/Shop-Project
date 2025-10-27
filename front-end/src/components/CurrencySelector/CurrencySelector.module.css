@@ -1,3 +1,27 @@
 .currencySelector {
   padding: 0.5rem;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .currencySelector {
+    padding: 0.3rem;
+    font-size: 0.9rem;
+  }
+  
+  .currencySelector select {
+    font-size: 0.9rem;
+    padding: 0.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .currencySelector {
+    padding: 0.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .currencySelector select {
+    font-size: 0.85rem;
+  }
+}

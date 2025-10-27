@@ -18,3 +18,10 @@
   color: var(--color-text-default);
   border-bottom: 3px solid var(--color-text-default);
 }
+
+/* Mobile responsive - hide desktop menu */
+@media (max-width: 768px) {
+  .mainMenu {
+    display: none;
+  }
+}

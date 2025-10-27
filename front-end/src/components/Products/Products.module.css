@@ -7,3 +7,23 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .bestsellersHeader {
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+    padding: 0 1rem;
+  }
+  
+  .productsWrapper {
+    gap: 0.8rem;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .productsWrapper {
+    justify-content: center;
+  }
+}

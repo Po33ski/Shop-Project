@@ -16,6 +16,14 @@ import { favouritesLoader } from "./api/favouritesLoader";
 import { addProductToFavourites } from "./api/addProductToFavouritesAction";
 import { deleteFavouriteAction } from "./api/deleteFavouritesAction";
 import { NotFound } from "./components/NotFound/NotFound";
+import { AdminDashboard } from "./views/Admin/AdminDashboard";
+import { AdminProductsList } from "./views/Admin/AdminProductsList";
+import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
+import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
+import { adminProductsLoader } from "./api/adminLoader";
+import { adminProductLoader } from "./api/adminLoader";
+import { editProductAction } from "./api/editProductAction";
+import { deleteProductAction } from "./api/deleteProductAction";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +48,29 @@ const router = createBrowserRouter([
         path: "/ulubione",
         element: <Favourites />,
         loader: favouritesLoader,
+      },
+      {
+        path: "/admin",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "/admin/products",
+        element: <AdminProductsList />,
+        loader: adminProductsLoader,
+      },
+      {
+        path: "/admin/products/add",
+        element: <AdminAddProduct />,
+      },
+      {
+        path: "/admin/products/edit/:id",
+        element: <AdminEditProduct />,
+        loader: adminProductLoader,
+        action: editProductAction,
+      },
+      {
+        path: "/admin/products/delete/:id",
+        action: deleteProductAction,
       },
       {
         path: "/:gender?",
