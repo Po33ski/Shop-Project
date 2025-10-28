@@ -7,8 +7,7 @@ const Product = require('../models/Product');
 // Helper function to generate safe file names
 const generateSafeFileName = (originalName, index) => {
   const timestamp = Date.now();
-  const randomSuffix = Math.random().toString(36).substring(2, 8);
-
+  
   // Remove extension and clean the name
   const nameWithoutExt = originalName.replace(/\.[^/.]+$/, '');
   const cleanName = nameWithoutExt
@@ -20,7 +19,10 @@ const generateSafeFileName = (originalName, index) => {
   // Ensure we have a name
   const finalName = cleanName || 'image';
 
-  return `${timestamp}-${index}-${finalName}.jpg`;
+  // Determine file extension based on original file
+  const extension = originalName.toLowerCase().includes('.png') ? '.png' : '.jpg';
+  
+  return `${timestamp}-${index}-${finalName}${extension}`;
 };
 
 // Configure multer for file uploads
@@ -30,10 +32,10 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024, // 5MB limit
   },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
       cb(null, true);
     } else {
-      cb(new Error('Only JPG images are allowed'), false);
+      cb(new Error('Only JPG and PNG images are allowed'), false);
     }
   }
 });
@@ -79,7 +81,7 @@ const uploadImageToAzure = async (file, fileName) => {
     await blockBlobClient.upload(file.buffer, file.buffer.length, uploadOptions);
     
     const baseUrl = process.env.AZURE_STORAGE_BASE_URL;
-    const urlWithSlash = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+    const urlWithSlash = baseUrl && baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
     
     return `${urlWithSlash}${fileName}`;
   } catch (error) {
@@ -116,6 +118,33 @@ const deleteImageFromAzure = async (imageUrl) => {
     // Don't throw error - image might not exist
     return false;
   }
+};
+
+// Multer error handling middleware
+const handleMulterError = (error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        error: 'File too large. Maximum size is 5MB.'
+      });
+    }
+    if (error.code === 'LIMIT_FILE_COUNT') {
+      return res.status(400).json({
+        success: false,
+        error: 'Too many files. Maximum is 3 files.'
+      });
+    }
+  }
+  
+  if (error.message === 'Only JPG and PNG images are allowed') {
+    return res.status(400).json({
+      success: false,
+      error: 'Only JPG and PNG images are allowed'
+    });
+  }
+  
+  next(error);
 };
 
 // GET /products - Get all products with filtering and pagination
@@ -173,7 +202,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /products - Create new product (with file upload support)
-router.post('/', upload.array('photos', 3), async (req, res) => {
+router.post('/', upload.fields([{ name: 'photos', maxCount: 3 }]), handleMulterError, async (req, res) => {
   try {
     const {
       productName,
@@ -198,9 +227,9 @@ router.post('/', upload.array('photos', 3), async (req, res) => {
 
     // Upload images to Azure
     const photoUrls = [];
-    if (req.files && req.files.length > 0) {
-      for (let i = 0; i < req.files.length; i++) {
-        const file = req.files[i];
+    if (req.files && req.files.photos && req.files.photos.length > 0) {
+      for (let i = 0; i < req.files.photos.length; i++) {
+        const file = req.files.photos[i];
         const fileName = generateSafeFileName(file.originalname, i);
         const imageUrl = await uploadImageToAzure(file, fileName);
         photoUrls.push(imageUrl);
@@ -246,39 +275,164 @@ router.post('/', upload.array('photos', 3), async (req, res) => {
   }
 });
 
-// PUT /products/:id - Update product
-router.put('/:id', async (req, res) => {
+// PUT /products/:id - Update product (with file upload support)
+router.put('/:id', upload.fields([{ name: 'photos', maxCount: 5 }]), handleMulterError, async (req, res) => {
   try {
-    const product = await Product.findOneAndUpdate(
-      { id: parseInt(req.params.id) },
-      req.body,
-      { new: true, runValidators: true }
-    );
-    
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({
+        success: false,
+        error: 'Product not found'
+      });
     }
-    
-    res.json(product);
+
+    const {
+      productName,
+      price,
+      category,
+      subcategory,
+      gender,
+      description,
+      brand,
+      maintenanceInfo,
+      isBestseller,
+      stock,
+      removedPhotos
+    } = req.body;
+
+    // Update fields
+    if (productName) product.productName = productName;
+    if (price) {
+      const productPrice = parseFloat(price);
+      product.price = productPrice;
+      product.pricePLN = productPrice;
+      product.priceUSD = Math.round(productPrice * 0.25 * 100) / 100;
+    }
+    if (category) product.category = category;
+    if (subcategory !== undefined) product.subcategory = subcategory;
+    if (gender) product.gender = gender;
+    if (description !== undefined) product.description = description;
+    if (brand !== undefined) product.brand = brand;
+    if (maintenanceInfo !== undefined) product.maintenanceInfo = maintenanceInfo;
+    if (isBestseller !== undefined) product.isBestseller = isBestseller === 'true' || isBestseller === true;
+    if (stock !== undefined) product.stock = parseInt(stock) || 0;
+
+    // Handle removed photos
+    if (removedPhotos) {
+      try {
+        const removedPhotosArray = JSON.parse(removedPhotos);
+        for (const photoUrl of removedPhotosArray) {
+          await deleteImageFromAzure(photoUrl);
+        }
+        // Remove from product photos
+        product.photos = product.photos.filter(photo => !removedPhotosArray.includes(photo));
+      } catch (error) {
+        console.error('Error parsing removed photos:', error);
+      }
+    }
+
+    // Handle new images (only if files are uploaded)
+    if (req.files && req.files.photos && req.files.photos.length > 0) {
+      const newPhotoUrls = [];
+      for (let i = 0; i < req.files.photos.length; i++) {
+        const file = req.files.photos[i];
+        const fileName = generateSafeFileName(file.originalname, i);
+        const imageUrl = await uploadImageToAzure(file, fileName);
+        newPhotoUrls.push(imageUrl);
+      }
+      
+      // Add new photos to existing ones
+      product.photos = [...product.photos, ...newPhotoUrls];
+    }
+
+    await product.save();
+
+    res.json({
+      success: true,
+      data: product,
+      message: 'Product updated successfully'
+    });
   } catch (error) {
     console.error('Error updating product:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update product'
+    });
   }
 });
 
 // DELETE /products/:id - Delete product
 router.delete('/:id', async (req, res) => {
   try {
-    const product = await Product.findOneAndDelete({ id: parseInt(req.params.id) });
-    
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({
+        success: false,
+        error: 'Product not found'
+      });
     }
-    
-    res.json({ message: 'Product deleted successfully' });
+
+    // Delete images from Azure
+    if (product.photos && product.photos.length > 0) {
+      for (const photoUrl of product.photos) {
+        await deleteImageFromAzure(photoUrl);
+      }
+    }
+
+    // Delete product from database
+    await Product.deleteOne({ id: parseInt(req.params.id) });
+
+    res.json({
+      success: true,
+      message: 'Product deleted successfully'
+    });
   } catch (error) {
     console.error('Error deleting product:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete product'
+    });
+  }
+});
+
+// DELETE /products/:id/photos/:photoIndex - Delete specific photo
+router.delete('/:id/photos/:photoIndex', async (req, res) => {
+  try {
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        error: 'Product not found'
+      });
+    }
+
+    const photoIndex = parseInt(req.params.photoIndex);
+    if (photoIndex < 0 || photoIndex >= product.photos.length) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid photo index'
+      });
+    }
+
+    // Delete photo from Azure
+    const photoUrl = product.photos[photoIndex];
+    await deleteImageFromAzure(photoUrl);
+
+    // Remove photo from array
+    product.photos.splice(photoIndex, 1);
+    await product.save();
+
+    res.json({
+      success: true,
+      message: 'Photo deleted successfully',
+      data: product
+    });
+  } catch (error) {
+    console.error('Error deleting photo:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete photo'
+    });
   }
 });
 

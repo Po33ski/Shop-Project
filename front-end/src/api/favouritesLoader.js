@@ -1,15 +1,39 @@
 import { BACK_END_URL } from "../constants/api";
 
+const FAVOURITES_STORAGE_KEY = 'shop-favourites';
+
 export async function favouritesLoader() {
   try {
-    const response = await fetch(`${BACK_END_URL}/favourites?_expand=product`);
+    // Get favourites from localStorage
+    const storedFavourites = localStorage.getItem(FAVOURITES_STORAGE_KEY);
+    const favourites = storedFavourites ? JSON.parse(storedFavourites) : [];
     
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (favourites.length === 0) {
+      return [];
     }
     
-    const favourites = await response.json();
-    return favourites;
+    // Fetch product details for each favourite
+    const favouritesWithProducts = [];
+    
+    for (const favourite of favourites) {
+      try {
+        const response = await fetch(`${BACK_END_URL}/products/${favourite.productId}`);
+        if (response.ok) {
+          const product = await response.json();
+          favouritesWithProducts.push({
+            id: favourite.id,
+            productId: favourite.productId,
+            product: product,
+            createdAt: favourite.createdAt
+          });
+        }
+      } catch (error) {
+        console.error(`Error fetching product ${favourite.productId}:`, error);
+        // Skip this favourite if product can't be loaded
+      }
+    }
+    
+    return favouritesWithProducts;
   } catch (error) {
     console.error('Error loading favourites:', error);
     // Return empty array on error to prevent crashes
