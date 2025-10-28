@@ -1,11 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const Favourite = require('../models/Favourite');
+const Product = require('../models/Product');
 
 // GET /favourites - Get all favourites
 router.get('/', async (req, res) => {
   try {
     const favourites = await Favourite.find().sort({ createdAt: -1 });
+    
+    // If _expand=product is requested, populate product data
+    if (req.query._expand === 'product') {
+      const favouritesWithProducts = [];
+      
+      for (const favourite of favourites) {
+        const product = await Product.findOne({ id: favourite.productId });
+        if (product) {
+          favouritesWithProducts.push({
+            id: favourite._id,
+            productId: favourite.productId,
+            product: product,
+            createdAt: favourite.createdAt
+          });
+        }
+      }
+      
+      return res.json(favouritesWithProducts);
+    }
+    
     res.json(favourites);
   } catch (error) {
     console.error('Error fetching favourites:', error);
