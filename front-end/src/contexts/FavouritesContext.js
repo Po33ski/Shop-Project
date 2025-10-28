@@ -1,17 +1,6 @@
 import { createContext, useContext } from 'react';
-import { useFavourites } from '../hooks/useFavourites';
 
 const FavouritesContext = createContext();
-
-export function FavouritesProvider({ children }) {
-  const favouritesData = useFavourites();
-
-  return (
-    <FavouritesContext.Provider value={favouritesData}>
-      {children}
-    </FavouritesContext.Provider>
-  );
-}
 
 export function useFavouritesContext() {
   const context = useContext(FavouritesContext);
@@ -20,3 +9,5 @@ export function useFavouritesContext() {
   }
   return context;
 }
+
+export { FavouritesContext };

@@ -15,7 +15,7 @@ export async function editProductAction({ request, params }) {
       formData.append('removedPhotos', JSON.stringify(removedPhotos));
     }
     
-    const response = await fetch(`${BACK_END_URL}/admin/products/${params.id}`, {
+    const response = await fetch(`${BACK_END_URL}/products/${params.id}`, {
       method: 'PUT',
       body: formData
     });

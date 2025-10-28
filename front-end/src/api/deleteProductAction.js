@@ -2,7 +2,7 @@ import { BACK_END_URL } from '../constants/api';
 
 export async function deleteProductAction({ params }) {
   try {
-    const response = await fetch(`${BACK_END_URL}/admin/products/${params.id}`, {
+    const response = await fetch(`${BACK_END_URL}/products/${params.id}`, {
       method: 'DELETE'
     });
     

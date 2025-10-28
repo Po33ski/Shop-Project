@@ -6,6 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
+      // Proxy API calls to backend in development
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
       // Proxy product photos to JSON Server in development
       '/product-photos': {
         target: 'http://localhost:3000',

@@ -22,7 +22,7 @@ import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
 import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
 import { AdminLogin } from "./views/Admin/AdminLogin";
 import { AdminProtectedRoute } from "./components/AdminProtectedRoute/AdminProtectedRoute";
-import { AdminProvider } from "./contexts/AdminContext";
+import { AdminProvider } from "./components/AdminProvider";
 import { adminProductsLoader } from "./api/adminLoader";
 import { adminProductLoader } from "./api/adminLoader";
 import { editProductAction } from "./api/editProductAction";

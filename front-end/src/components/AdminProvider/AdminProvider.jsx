@@ -1,6 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-
-const AdminContext = createContext();
+import { useState } from 'react';
+import { AdminContext } from '../../contexts/AdminContext';
 
 export function AdminProvider({ children }) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -28,12 +27,4 @@ export function AdminProvider({ children }) {
       {children}
     </AdminContext.Provider>
   );
-}
-
-export function useAdmin() {
-  const context = useContext(AdminContext);
-  if (!context) {
-    throw new Error('useAdmin must be used within AdminProvider');
-  }
-  return context;
 }
