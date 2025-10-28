@@ -5,6 +5,7 @@ export function ImageUpload({
   name = 'photos',
   accept = 'image/jpeg,image/jpg',
   multiple = true,
+  maxFiles = 3,
   onChange,
   existingPhotos = [],
   children 
@@ -19,6 +20,14 @@ export function ImageUpload({
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
+    
+    // Check file limit
+    const totalFiles = existingPhotos.length - removedPhotos.length + files.length;
+    if (totalFiles > maxFiles) {
+      alert(`Możesz dodać maksymalnie ${maxFiles} zdjęć. Obecnie masz ${existingPhotos.length - removedPhotos.length} istniejących zdjęć.`);
+      return;
+    }
+    
     setSelectedFiles(files);
     
     if (onChange) {
@@ -79,7 +88,7 @@ export function ImageUpload({
         className={styles.uploadArea}
         onClick={handleAreaClick}
       >
-        {children || '📷 Kliknij aby wybrać zdjęcia (JPG)'}
+        {children || `📷 Kliknij aby wybrać zdjęcia (JPG, max ${maxFiles})`}
       </div>
       
       {/* Existing Photos */}

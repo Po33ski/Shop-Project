@@ -10,6 +10,12 @@ export function Breadcrumbs() {
   const foundGender = GENDERS.find((g) => g.path === gender);
   const foundCategory = CATEGORIES.find((c) => c.path === category);
 
+  // Safety check - if gender or category not found, don't render breadcrumbs
+  if (!foundGender || !foundCategory) {
+    console.warn('Breadcrumbs: Gender or category not found', { gender, category, foundGender, foundCategory });
+    return null;
+  }
+
   const breadcrumbs = [
     {
       categoryName: foundGender.categoryName,
@@ -22,14 +28,24 @@ export function Breadcrumbs() {
   ];
 
   if (subcategory) {
-    const foundSubcategory = foundCategory.subcategories.find(
+    const foundSubcategory = foundCategory.subcategories?.find(
       (sc) => sc.path === subcategory
     );
 
-    breadcrumbs.push({
-      categoryName: foundSubcategory.categoryName,
-      path: `/${foundGender.path}/${foundCategory.path}/${foundSubcategory.path}`,
-    });
+    // Only add subcategory breadcrumb if found
+    if (foundSubcategory) {
+      breadcrumbs.push({
+        categoryName: foundSubcategory.categoryName,
+        path: `/${foundGender.path}/${foundCategory.path}/${foundSubcategory.path}`,
+      });
+    } else {
+      console.warn('Breadcrumbs: Subcategory not found', { subcategory, category: foundCategory });
+      // Add generic subcategory breadcrumb
+      breadcrumbs.push({
+        categoryName: subcategory.charAt(0).toUpperCase() + subcategory.slice(1),
+        path: `/${foundGender.path}/${foundCategory.path}/${subcategory}`,
+      });
+    }
   }
 
   return (

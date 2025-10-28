@@ -24,6 +24,10 @@ export function AdminAddProduct() {
     subcategory: '',
     gender: 'women',
     description: '',
+    brand: '',
+    maintenanceInfo: '',
+    isBestseller: false,
+    stock: 0,
     photos: []
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,6 +65,10 @@ export function AdminAddProduct() {
       formDataToSend.append('subcategory', formData.subcategory);
       formDataToSend.append('gender', formData.gender);
       formDataToSend.append('description', formData.description);
+      formDataToSend.append('brand', formData.brand);
+      formDataToSend.append('maintenanceInfo', formData.maintenanceInfo);
+      formDataToSend.append('isBestseller', formData.isBestseller);
+      formDataToSend.append('stock', formData.stock);
       
       // Add photos if any
       const fileInput = document.querySelector('input[name="photos"]');
@@ -70,8 +78,8 @@ export function AdminAddProduct() {
         }
       }
 
-      // Submit to backend
-      const response = await fetch(`${BACK_END_URL}/admin/products`, {
+      // Submit to backend (using regular products endpoint)
+      const response = await fetch(`${BACK_END_URL}/products`, {
         method: 'POST',
         body: formDataToSend
       });
@@ -106,7 +114,7 @@ export function AdminAddProduct() {
         }
       />
 
-      <div className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         {error && (
           <div className={styles.errorMessage}>
             ❌ {error}
@@ -208,6 +216,45 @@ export function AdminAddProduct() {
               onChange={handleInputChange}
             />
           </AdminFormGroup>
+
+          <AdminFormGroup label="Marka">
+            <AdminInput
+              name="brand"
+              value={formData.brand}
+              onChange={handleInputChange}
+              placeholder="np. Nike, Adidas, H&M..."
+            />
+          </AdminFormGroup>
+
+          <AdminFormGroup label="Informacje o pielęgnacji">
+            <AdminTextarea
+              name="maintenanceInfo"
+              value={formData.maintenanceInfo}
+              onChange={handleInputChange}
+              placeholder="np. Prać w 30°C, nie wybielać..."
+            />
+          </AdminFormGroup>
+
+          <AdminFormGroup label="Stan magazynowy">
+            <AdminInput
+              type="number"
+              name="stock"
+              value={formData.stock}
+              onChange={handleInputChange}
+              min="0"
+            />
+          </AdminFormGroup>
+
+          <AdminFormGroup label="Bestseller">
+            <AdminSelect
+              name="isBestseller"
+              value={formData.isBestseller}
+              onChange={handleInputChange}
+            >
+              <option value={false}>Nie</option>
+              <option value={true}>Tak</option>
+            </AdminSelect>
+          </AdminFormGroup>
         </AdminFormGrid>
 
         <AdminFormGroup label="Zdjęcia">
@@ -216,9 +263,8 @@ export function AdminAddProduct() {
 
         <AdminFormActions>
           <AdminButton 
-            type="button" 
+            type="submit" 
             variant="primary"
-            onClick={handleSubmit}
             disabled={isSubmitting}
           >
             {isSubmitting ? '⏳ Zapisywanie...' : '💾 Zapisz Produkt'}
@@ -231,7 +277,7 @@ export function AdminAddProduct() {
             ❌ Anuluj
           </AdminButton>
         </AdminFormActions>
-      </div>
+      </form>
     </AdminContainer>
   );
 }
