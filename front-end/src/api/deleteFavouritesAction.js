@@ -21,7 +21,6 @@ export function deleteFavouriteAction({ params }) {
     
     localStorage.setItem(FAVOURITES_STORAGE_KEY, JSON.stringify(updatedFavourites));
     
-    console.log('Removed from favourites:', favouriteId);
     
     // Return a successful Response object
     return Promise.resolve(new Response(JSON.stringify({ message: 'Favourite removed successfully' }), {

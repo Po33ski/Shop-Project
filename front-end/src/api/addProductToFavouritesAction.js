@@ -27,7 +27,6 @@ export function addProductToFavourites({ params: { productId } }) {
     const updatedFavourites = [...favourites, newFavourite];
     localStorage.setItem(FAVOURITES_STORAGE_KEY, JSON.stringify(updatedFavourites));
     
-    console.log('Added to favourites:', numericProductId);
     
     // Return a successful Response object
     return Promise.resolve(new Response(JSON.stringify(newFavourite), {

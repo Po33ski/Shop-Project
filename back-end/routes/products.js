@@ -61,7 +61,8 @@ if (process.env.AZURE_STORAGE_CONNECTION_STRING) {
 const uploadImageToAzure = async (file, fileName) => {
   if (!blobServiceClient) {
     // Return placeholder URL if Azure is not configured
-    return `https://via.placeholder.com/300x400?text=${encodeURIComponent(fileName)}`;
+    console.log('⚠️ Azure not configured, returning placeholder for:', fileName);
+    return `https://dummyimage.com/300x400/cccccc/969696.png&text=No+Image`;
   }
 
   try {
@@ -87,7 +88,8 @@ const uploadImageToAzure = async (file, fileName) => {
   } catch (error) {
     console.error('Error uploading to Azure:', error);
     // Return placeholder URL on error
-    return `https://via.placeholder.com/300x400?text=${encodeURIComponent(fileName)}`;
+    console.log('⚠️ Azure upload failed, returning placeholder for:', fileName);
+    return `https://dummyimage.com/300x400/cccccc/969696.png&text=Upload+Failed`;
   }
 };
 
@@ -100,7 +102,7 @@ const deleteImageFromAzure = async (imageUrl) => {
   }
 
   // Skip delete for placeholder URLs
-  if (imageUrl.includes('via.placeholder.com')) {
+  if (imageUrl.includes('dummyimage.com') || imageUrl.includes('via.placeholder.com')) {
     console.log(`⚠️ Skipping delete (placeholder URL): ${imageUrl}`);
     return true;
   }

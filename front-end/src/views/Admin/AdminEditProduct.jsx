@@ -69,8 +69,6 @@ export function AdminEditProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted');
-    console.log('Form data:', formData);
     
     // Submit form data to React Router action
     const formDataToSubmit = new FormData();
@@ -100,7 +98,6 @@ export function AdminEditProduct() {
   // Handle action result
   useEffect(() => {
     if (actionData) {
-      console.log('Action data received:', actionData);
       if (actionData.success) {
         alert(actionData.message);
         navigate('/admin/products');

@@ -4,15 +4,23 @@ import { useAdmin } from '../../contexts/AdminContext';
 import styles from './AdminConsoleButton.module.css';
 
 export function AdminConsoleButton() {
-  const { isAdminLoggedIn, logoutAdmin } = useAdmin();
+  const { isAdminLoggedIn, logoutAdmin, isLoading } = useAdmin();
   const navigate = useNavigate();
   
-  console.log('AdminConsoleButton rendered, isAdminLoggedIn:', isAdminLoggedIn);
 
   const handleLogout = () => {
     logoutAdmin();
     navigate('/');
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className={styles.adminConsoleBtn} style={{ opacity: 0.6 }}>
+        ⏳ Ładowanie...
+      </div>
+    );
+  }
 
   if (isAdminLoggedIn) {
     return (
