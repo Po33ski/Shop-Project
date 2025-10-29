@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const FAVOURITES_STORAGE_KEY = 'shop-favourites';
+import { FAVOURITES_STORAGE_KEY } from '../constants/favourites';
 
 export function useFavourites() {
   const [favourites, setFavourites] = useState([]);

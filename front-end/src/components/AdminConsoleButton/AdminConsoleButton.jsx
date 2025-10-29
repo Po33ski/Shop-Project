@@ -36,7 +36,7 @@ export function AdminConsoleButton() {
   }
 
   return (
-    <Link to="/admin/login" className={styles.adminConsoleBtn}>
+    <Link to="/admin" className={styles.adminConsoleBtn}>
       🔐 Admin
     </Link>
   );

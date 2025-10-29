@@ -1,4 +1,4 @@
-const FAVOURITES_STORAGE_KEY = 'shop-favourites';
+import { FAVOURITES_STORAGE_KEY } from '../constants/favourites';
 
 export function addProductToFavourites({ params: { productId } }) {
   try {

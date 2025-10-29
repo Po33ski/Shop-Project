@@ -41,8 +41,18 @@ const productSchema = new mongoose.Schema({
     required: false // Keep for backward compatibility
   },
   photos: [{
-    type: String,
-    required: false // Made optional for products without images
+    photoAzureUrl: {
+      type: String,
+      required: false // Made optional for products without images
+    },
+    photoName: {
+      type: String,
+      required: false // Made optional for products without images
+    },
+    photoIndex: {
+      type: Number,
+      required: false // Index of the photo
+    }
   }],
   description: {
     type: String,

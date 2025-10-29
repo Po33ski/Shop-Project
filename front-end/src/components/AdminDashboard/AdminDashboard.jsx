@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
-import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
-import { AdminCard } from '../../components/AdminCard/AdminCard';
-import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { AdminContainer } from '../AdminContainer/AdminContainer';
+import { AdminHeader } from '../AdminHeader/AdminHeader';
+import { AdminCard } from '../AdminCard/AdminCard';
+import { AdminButton } from '../AdminButton/AdminButton';
 import { useAdmin } from '../../contexts/AdminContext';
 import styles from './AdminDashboard.module.css';
 

@@ -2,6 +2,9 @@ const express = require('express');
 const Product = require('../models/Product');
 const router = express.Router();
 
+// Import transformation function from products.js
+const { transformProductForFrontend } = require('./products');
+
 // GET /women - Get women's category data
 router.get('/women', async (req, res) => {
   try {
@@ -14,8 +17,11 @@ router.get('/women', async (req, res) => {
     // Get dedicated hero image
     const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/women.jpg';
 
+    // Transform bestsellers for frontend
+    const transformedBestsellers = bestsellers.map(product => transformProductForFrontend(product));
+    
     res.json({
-      bestsellers,
+      bestsellers: transformedBestsellers,
       heroImageUrl
     });
   } catch (error) {
@@ -36,8 +42,11 @@ router.get('/men', async (req, res) => {
     // Get dedicated hero image
     const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/men.jpg';
 
+    // Transform bestsellers for frontend
+    const transformedBestsellers = bestsellers.map(product => transformProductForFrontend(product));
+    
     res.json({
-      bestsellers,
+      bestsellers: transformedBestsellers,
       heroImageUrl
     });
   } catch (error) {
@@ -58,8 +67,11 @@ router.get('/children', async (req, res) => {
     // Get dedicated hero image
     const heroImageUrl = 'https://shopstorage1523.blob.core.windows.net/product-images/children.jpg';
 
+    // Transform bestsellers for frontend
+    const transformedBestsellers = bestsellers.map(product => transformProductForFrontend(product));
+    
     res.json({
-      bestsellers,
+      bestsellers: transformedBestsellers,
       heroImageUrl
     });
   } catch (error) {

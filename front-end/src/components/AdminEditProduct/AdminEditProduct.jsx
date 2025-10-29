@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLoaderData, useActionData, useSubmit } from 'react-router-dom';
-import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
-import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
-import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { AdminContainer } from '../AdminContainer/AdminContainer';
+import { AdminHeader } from '../AdminHeader/AdminHeader';
+import { AdminButton } from '../AdminButton/AdminButton';
 import { 
   AdminForm, 
   AdminFormGrid, 
@@ -11,8 +11,9 @@ import {
   AdminSelect, 
   AdminTextarea, 
   AdminFormActions 
-} from '../../components/AdminForm/AdminForm';
-import { ImageUpload } from '../../components/ImageUpload/ImageUpload';
+} from '../AdminForm/AdminForm';
+import { ImageUpload } from '../ImageUpload/ImageUpload';
+import styles from './AdminEditProduct.module.css';
 
 export function AdminEditProduct() {
   const navigate = useNavigate();

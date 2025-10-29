@@ -1,9 +1,10 @@
 import { Link, useLoaderData, useFetcher, useNavigate } from 'react-router-dom';
-import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
-import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
-import { AdminButton } from '../../components/AdminButton/AdminButton';
-import { AdminTable } from '../../components/AdminTable/AdminTable';
+import { AdminContainer } from '../AdminContainer/AdminContainer';
+import { AdminHeader } from '../AdminHeader/AdminHeader';
+import { AdminButton } from '../AdminButton/AdminButton';
+import { AdminTable } from '../AdminTable/AdminTable';
 import { useEffect } from 'react';
+import styles from './AdminProductsList.module.css';
 
 export function AdminProductsList() {
   const products = useLoaderData();

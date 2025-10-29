@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
-import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
-import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { AdminContainer } from '../AdminContainer/AdminContainer';
+import { AdminHeader } from '../AdminHeader/AdminHeader';
+import { AdminButton } from '../AdminButton/AdminButton';
 import { 
   AdminFormGrid, 
   AdminFormGroup, 
@@ -10,8 +10,8 @@ import {
   AdminSelect, 
   AdminTextarea, 
   AdminFormActions 
-} from '../../components/AdminForm/AdminForm';
-import { ImageUpload } from '../../components/ImageUpload/ImageUpload';
+} from '../AdminForm/AdminForm';
+import { ImageUpload } from '../ImageUpload/ImageUpload';
 import styles from './AdminAddProduct.module.css';
 import { BACK_END_URL } from '../../constants/api';
 
@@ -84,6 +84,17 @@ export function AdminAddProduct() {
         body: formDataToSend
       });
 
+      if (!response.ok) {
+        let errorMessage = `Błąd HTTP! Status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use status message
+        }
+        throw new Error(errorMessage);
+      }
+
       const result = await response.json();
 
       if (result.success) {
@@ -94,7 +105,7 @@ export function AdminAddProduct() {
       }
     } catch (err) {
       console.error('Error adding product:', err);
-      setError('Wystąpił błąd podczas dodawania produktu');
+      setError(err.message || 'Wystąpił błąd podczas dodawania produktu');
     } finally {
       setIsSubmitting(false);
     }

@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../../contexts/AdminContext';
-import { AdminContainer } from '../../components/AdminContainer/AdminContainer';
-import { AdminHeader } from '../../components/AdminHeader/AdminHeader';
-import { AdminButton } from '../../components/AdminButton/AdminButton';
+import { AdminContainer } from '../AdminContainer/AdminContainer';
+import { AdminHeader } from '../AdminHeader/AdminHeader';
+import { AdminButton } from '../AdminButton/AdminButton';
 import { 
   AdminForm, 
   AdminFormGroup, 
   AdminInput, 
   AdminFormActions 
-} from '../../components/AdminForm/AdminForm';
+} from '../AdminForm/AdminForm';
 import styles from './AdminLogin.module.css';
 
 export function AdminLogin() {

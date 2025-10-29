@@ -1,6 +1,5 @@
 import { BACK_END_URL } from "../constants/api";
-
-const FAVOURITES_STORAGE_KEY = 'shop-favourites';
+import { FAVOURITES_STORAGE_KEY } from '../constants/favourites';
 
 export async function favouritesLoader() {
   try {
@@ -26,6 +25,9 @@ export async function favouritesLoader() {
             product: product,
             createdAt: favourite.createdAt
           });
+        } else {
+          console.warn(`Failed to fetch product ${favourite.productId}: HTTP ${response.status}`);
+          // Skip this favourite if product can't be loaded
         }
       } catch (error) {
         console.error(`Error fetching product ${favourite.productId}:`, error);

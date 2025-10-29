@@ -17,15 +17,12 @@ import { addProductToFavourites } from "./api/addProductToFavouritesAction";
 import { deleteFavouriteAction } from "./api/deleteFavouritesAction";
 import { NotFound } from "./components/NotFound/NotFound";
 import { Admin } from "./views/Admin/Admin";
-import { AdminDashboard } from "./views/Admin/AdminDashboard";
-import { AdminProductsList } from "./views/Admin/AdminProductsList";
-import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
-import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
-import { AdminLogin } from "./views/Admin/AdminLogin";
+import { AdminAddProductView } from "./views/AdminAddProduct/AdminAddProduct";
+import { AdminEditProductView } from "./views/AdminEditProduct/AdminEditProduct";
+import { AdminProductsListView } from "./views/AdminProductsList/AdminProductsList";
 import { AdminProtectedRoute } from "./components/AdminProtectedRoute/AdminProtectedRoute";
 import { AdminProvider } from "./components/AdminProvider";
 import { adminProductsLoader } from "./api/adminLoader";
-import { adminProductLoader } from "./api/adminLoader";
 import { editProductAction } from "./api/editProductAction";
 import { deleteProductAction } from "./api/deleteProductAction";
 
@@ -56,51 +53,37 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Admin />,
-        children: [
-          {
-            path: "login",
-            element: <AdminLogin />,
-          },
-          {
-            index: true,
-            element: (
-              <AdminProtectedRoute>
-                <AdminDashboard />
-              </AdminProtectedRoute>
-            ),
-          },
-          {
-            path: "products",
-            element: (
-              <AdminProtectedRoute>
-                <AdminProductsList />
-              </AdminProtectedRoute>
-            ),
-            loader: adminProductsLoader,
-          },
-          {
-            path: "products/add",
-            element: (
-              <AdminProtectedRoute>
-                <AdminAddProduct />
-              </AdminProtectedRoute>
-            ),
-          },
-          {
-            path: "products/edit/:id",
-            element: (
-              <AdminProtectedRoute>
-                <AdminEditProduct />
-              </AdminProtectedRoute>
-            ),
-            loader: adminProductLoader,
-            action: editProductAction,
-          },
-          {
-            path: "products/delete/:id",
-            action: deleteProductAction,
-          },
-        ],
+      },
+      {
+        path: "/admin/products",
+        element: (
+          <AdminProtectedRoute>
+            <AdminProductsListView />
+          </AdminProtectedRoute>
+        ),
+        loader: adminProductsLoader,
+      },
+      {
+        path: "/admin/products/add",
+        element: (
+          <AdminProtectedRoute>
+            <AdminAddProductView />
+          </AdminProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/products/edit/:id",
+        element: (
+          <AdminProtectedRoute>
+            <AdminEditProductView />
+          </AdminProtectedRoute>
+        ),
+        loader: productLoader,
+        action: editProductAction,
+      },
+      {
+        path: "/admin/products/delete/:id",
+        action: deleteProductAction,
       },
       {
         path: "/:gender?",
