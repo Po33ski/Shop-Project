@@ -16,12 +16,13 @@ import { favouritesLoader } from "./api/favouritesLoader";
 import { addProductToFavourites } from "./api/addProductToFavouritesAction";
 import { deleteFavouriteAction } from "./api/deleteFavouritesAction";
 import { NotFound } from "./components/NotFound/NotFound";
-import { AdminDashboard } from "./views/Admin/AdminDashboard";
-import { AdminProductsList } from "./views/Admin/AdminProductsList";
-import { AdminAddProduct } from "./views/Admin/AdminAddProduct";
-import { AdminEditProduct } from "./views/Admin/AdminEditProduct";
+import { Admin } from "./views/Admin/Admin";
+import { AdminAddProductView } from "./views/AdminAddProduct/AdminAddProduct";
+import { AdminEditProductView } from "./views/AdminEditProduct/AdminEditProduct";
+import { AdminProductsListView } from "./views/AdminProductsList/AdminProductsList";
+import { AdminProtectedRoute } from "./components/AdminProtectedRoute/AdminProtectedRoute";
+import { AdminProvider } from "./components/AdminProvider";
 import { adminProductsLoader } from "./api/adminLoader";
-import { adminProductLoader } from "./api/adminLoader";
 import { editProductAction } from "./api/editProductAction";
 import { deleteProductAction } from "./api/deleteProductAction";
 
@@ -51,21 +52,33 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <AdminDashboard />,
+        element: <Admin />,
       },
       {
         path: "/admin/products",
-        element: <AdminProductsList />,
+        element: (
+          <AdminProtectedRoute>
+            <AdminProductsListView />
+          </AdminProtectedRoute>
+        ),
         loader: adminProductsLoader,
       },
       {
         path: "/admin/products/add",
-        element: <AdminAddProduct />,
+        element: (
+          <AdminProtectedRoute>
+            <AdminAddProductView />
+          </AdminProtectedRoute>
+        ),
       },
       {
         path: "/admin/products/edit/:id",
-        element: <AdminEditProduct />,
-        loader: adminProductLoader,
+        element: (
+          <AdminProtectedRoute>
+            <AdminEditProductView />
+          </AdminProtectedRoute>
+        ),
+        loader: productLoader,
         action: editProductAction,
       },
       {
@@ -100,6 +113,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <AdminProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AdminProvider>
   </React.StrictMode>
 );

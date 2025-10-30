@@ -10,13 +10,23 @@ export function FavouriteProduct({ favourite }) {
   const product = favourite.product;
   const { Form } = useFetcher();
 
+  // Safety check - if product is not loaded, don't render
+  if (!product) {
+    return null;
+  }
+
   const price = <Price product={product} />;
 
   const [, addProductToCart] = useContext(CartContext);
 
+  // Get first photo or use placeholder
+  const photoUrl = product.photos && product.photos.length > 0 
+    ? product.photos[0] 
+    : 'https://via.placeholder.com/300x400?text=No+Image';
+
   return (
     <div className={styles.favouriteProduct}>
-      <img src={product.photos[0]} />
+      <img src={photoUrl} />
       <div className={styles.favouriteProductInfo}>
         <div className={styles.topRow}>
           <h3>

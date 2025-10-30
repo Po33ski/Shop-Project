@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 import { BACK_END_URL, PATH_TO_ENDPOINT_MAPPING } from "../constants/api";
 import { CATEGORIES } from "../constants/categories";
 
-export function productListLoader({
+export async function productListLoader({
   params: { gender, category, subcategory },
   request,
 }) {
@@ -27,18 +27,27 @@ export function productListLoader({
 
     url = `${url}&_limit=10&_page=${page}`;
 
-    return fetch(url).then((response) => {
+    try {
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const numberOfPages = Math.ceil(
         Number(response.headers.get("X-Total-Count")) / 10
       );
 
-      return response.json().then((products) => {
-        return {
-          products,
-          numberOfPages,
-        };
-      });
-    });
+      const products = await response.json();
+      
+      return {
+        products,
+        numberOfPages,
+      };
+    } catch (error) {
+      console.error('Error loading product list:', error);
+      throw new Error('Failed to load products');
+    }
   } else {
     return redirect("/kobieta");
   }

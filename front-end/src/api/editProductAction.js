@@ -1,13 +1,21 @@
 import { BACK_END_URL } from '../constants/api';
 
 export async function editProductAction({ request, params }) {
+  
   try {
     const formData = await request.formData();
     
-    const response = await fetch(`${BACK_END_URL}/admin/products/${params.id}`, {
+    // Add removed photos information
+    const removedPhotos = formData.getAll('removedPhotos');
+    if (removedPhotos.length > 0) {
+      formData.append('removedPhotos', JSON.stringify(removedPhotos));
+    }
+    
+    const response = await fetch(`${BACK_END_URL}/products/${params.id}`, {
       method: 'PUT',
       body: formData
     });
+    
     
     if (!response.ok) {
       const errorData = await response.json();

@@ -23,12 +23,32 @@ export const CATEGORIES = [
         path: "koszulki",
       },
       {
+        categoryName: "Spodnie",
+        path: "spodnie",
+      },
+      {
+        categoryName: "Sukienki",
+        path: "sukienki",
+      },
+      {
+        categoryName: "Bluzki",
+        path: "bluzki",
+      },
+      {
+        categoryName: "Spódniczki",
+        path: "spodniczki",
+      },
+      {
         categoryName: "Swetry",
         path: "swetry",
       },
       {
-        categoryName: "Spodnie",
-        path: "spodnie",
+        categoryName: "Kurtki",
+        path: "kurtki",
+      },
+      {
+        categoryName: "Płaszcze",
+        path: "płaszcze",
       },
     ],
   },
@@ -37,16 +57,16 @@ export const CATEGORIES = [
     path: "obuwie",
     subcategories: [
       {
-        categoryName: "Eleganckie",
-        path: "eleganckie",
+        categoryName: "Sneakersy",
+        path: "sneakersy",
       },
       {
         categoryName: "Sportowe",
         path: "sportowe",
       },
       {
-        categoryName: "Sneakersy",
-        path: "sneakersy",
+        categoryName: "Eleganckie",
+        path: "eleganckie",
       },
     ],
   },
@@ -55,30 +75,32 @@ export const CATEGORIES = [
     path: "akcesoria",
     subcategories: [
       {
-        categoryName: "Torby",
-        path: "torby",
+        categoryName: "Torebki",
+        path: "torebki",
+      },
+      {
+        categoryName: "Plecaki",
+        path: "plecaki",
       },
       {
         categoryName: "Zegarki",
         path: "zegarki",
       },
-    ],
-  },
-  {
-    categoryName: "Sport",
-    path: "sport",
-    subcategories: [
       {
-        categoryName: "Piłka nożna",
-        path: "pilkanozna",
+        categoryName: "Biżuteria",
+        path: "biżuteria",
       },
       {
-        categoryName: "Narty",
-        path: "narty",
+        categoryName: "Paski",
+        path: "paski",
       },
       {
-        categoryName: "Pływane",
-        path: "plywanie",
+        categoryName: "Czapki",
+        path: "czapki",
+      },
+      {
+        categoryName: "Szaliki",
+        path: "szaliki",
       },
     ],
   },
